@@ -10,8 +10,12 @@ Techologies used:
 * node.js
 * express
 * midi-writer js or similar https://www.npmjs.com/package/midi-writer-js
-* MIDI API
-* Web Audio API
+* Web Audio API and/or MIDI API
 * Javascript
 * React
 * CSS
+* Postgres
+* bcrypt
+* jwt
+
+![rough sketch of the concept](figures/diagram.jpg)
