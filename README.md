@@ -1,4 +1,4 @@
-# Tap-a-tune
+# Tappity
 
 User Story:
 
@@ -15,7 +15,7 @@ Techologies used:
 * React
 * CSS
 * Postgres
-* bcrypt
-* jwt
+* [bcrypt] - if time
+* [jwt] - if time
 
 ![rough sketch of the concept](figures/diagram.jpg)
