@@ -1,4 +1,4 @@
-// webpack adapted from bobby / jason's webpack config
+// webpack adapted from @gittheking & @jasonseminara webpack config
 
 'use strict'
 const webpack           = require('webpack');
