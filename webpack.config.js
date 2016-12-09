@@ -1,13 +1,13 @@
 // webpack adapted from @gittheking & @jasonseminara webpack config
 
 'use strict'
-const webpack           = require('webpack');
-const path              = require('path');
+const webpack = require('webpack');
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const BUILD_DIR         = path.resolve(__dirname, 'dist');
-const APP_DIR           = path.resolve(__dirname, 'src');
+const BUILD_DIR = path.resolve(__dirname, 'dist');
+const APP_DIR = path.resolve(__dirname, 'src');
 
 
 module.exports = {
@@ -23,13 +23,21 @@ module.exports = {
     colors: true,
     reasons: true
   },
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
+  },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+    NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+      },
+    }),
     new HtmlWebpackPlugin({
-      title: 'ReactJS Hello World',
+      title: 'ReactJS',
       xhtml: true,
       inject: false,
       template: require('html-webpack-template'),
-      appMountId: 'root-container'
+      appMountId: 'root'
     }),
     new ExtractTextPlugin('/css/[name].css', {
       allChunks: true
@@ -37,7 +45,6 @@ module.exports = {
   ],
 
   module : {
-    include: path.join(__dirname, 'src'),
     loaders: [
       {
         test: /\.css$/,
@@ -66,3 +73,25 @@ module.exports = {
     ]
   }
 };
+
+// if (process.env &&
+//   process.env.NODE_ENV &&
+//   process.env.NODE_ENV === 'production') {
+//   const prodPlugins = [
+//     new webpack.optimize.UglifyJsPlugin({
+//       compress: {
+//         warnings: true,
+//       },
+//       output: {
+//         comments: false,
+//       },
+//     }),
+//     new webpack.optimize.CommonsChunkPlugin('/js/common.js'),
+//   ];
+//
+//   config.plugins = config.plugins.concat(prodPlugins);
+//
+//   config.cache = false;
+//   config.debug = false;
+//   config.devtool = undefined;
+// }
