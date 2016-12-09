@@ -23,6 +23,7 @@ authRouter.post('/signup', (req, res) => {
   });
 });
 
+// verifies the user authentication session
 authRouter.post('/verify', (req, res) => {
   res.json({
     token: res.token || 'invalid',
