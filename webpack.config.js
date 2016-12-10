@@ -44,12 +44,11 @@ module.exports = {
     })
   ],
 
-  module : {
+  module: {
     loaders: [
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]')
-      },
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
       {
         test: /\.svg$/,
         loader: 'file-loader?name=/img/[name].[hash:base64:5].[ext]'

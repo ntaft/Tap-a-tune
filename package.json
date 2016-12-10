@@ -4,23 +4,6 @@
   "description": "tap a beat and save it in the cloud",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ntaft/Tappity.git"
-  },
-  "keywords": [
-    "project"
-  ],
-  "author": "Nick Taft",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ntaft/Tappity/issues"
-  },
-  "homepage": "https://github.com/ntaft/Tappity#readme",
-  "scripts": {
     "clean": "rm -rf dist && rm -rf node_modules",
     "heroku-prebuild": "bash ./scripts/deployment_react.sh",
     "heroku-postbuild": "bash ./scripts/deployment_cleanup.sh",
@@ -29,12 +12,28 @@
     "watch": "webpack -d --progress --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ntaft/Tappity.git"
+  },
+  "keywords": [
+    "project",
+    "audio",
+    "react"
+  ],
+  "author": "Nick Taft",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ntaft/Tappity/issues"
+  },
+  "homepage": "https://github.com/ntaft/Tappity#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "morgan": "^1.7.0",
-    "pg-promise": "^5.3.5",
-    "node-fetch": "^1.6.3"
+    "node-fetch": "^1.6.3",
+    "pg-promise": "^5.3.5"
   },
   "devDependencies": {
     "babel": "^6.5.2",

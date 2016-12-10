@@ -4,16 +4,19 @@ songRouter.get('/:id', (req, res) => {
   res.json('return song by id');
 });
 
-songRouter.get('/', (req, res) => {
+songRouter.get('/all/:id', (req, res) => {
   res.json('returns list of all user songs');
 });
 
 songRouter.post('/', (req, res) => {
-  res.response(200, 'posting a song');
+  res.status(200);
+  console.log(req.body);
+  res.json(`saving song id #${req.body.id}`);
 });
 
 songRouter.delete('/:id', (req, res) => {
-  res.response(200, 'deleting song by id');
+  res.status(200);
+  res.json(`deleting song with id #${req.params.id}`);
 });
 
 module.exports = songRouter;

@@ -6,20 +6,9 @@ const fileRouter = require('express').Router();
 //   res.send('send a file selected by name/id')
 // });
 
-fileRouter.get('/sound1', (req, res) => {
-  res.sendFile('/Users/ntaft/Desktop/Samples/kick-808.wav')
-});
-
-fileRouter.get('/sound2', (req, res) => {
-  res.sendFile('/Users/ntaft/Desktop/Samples/snare-808.wav')
-});
-
-fileRouter.get('/sound3', (req, res) => {
-  res.sendFile('/Users/ntaft/Desktop/Samples/tom-808.wav')
-});
-
-fileRouter.get('/sound4', (req, res) => {
-  res.sendFile('/Users/ntaft/Desktop/Samples/hihat-808.wav')
+fileRouter.get('/:filename', (req, res) => {
+  console.log(req.params.filename);
+  res.sendFile(`/Users/ntaft/Desktop/Samples/${req.params.filename}.wav`);
 });
 
 // lists all avaliable files
