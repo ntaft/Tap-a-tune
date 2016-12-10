@@ -1,0 +1,46 @@
+
+ /*Flexbox layout adapted from https://css-tricks.com/snippets/css/a-guide-to-flexbox/*/
+.flex-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+/* We tell all items to be 100% width */
+.header, .main, .sidebar, .saved .footer {
+  flex: 1 100%;
+}
+
+.header, .footer {
+  background-color: green;
+}
+
+.sidebar, .saved {
+  background-color: darkblue;
+}
+/* We rely on source order for mobile-first approach
+ * in this case:
+ * 1. header
+ * 2. nav
+ * 3. main
+ * 4. aside
+ * 5. footer
+ */
+
+/* Medium screens */
+@media all and (min-width: 600px) {
+  /* We tell both sidebars to share a row */
+  .saved, .sidebar { flex: 1 auto; }
+}
+
+/* Large screens */
+@media all and (min-width: 800px) {
+  /* We invert order of first sidebar and main
+   * And tell the main element to take twice as much width as the other two sidebars
+   */
+  .main { flex: 2 0px; }
+
+  .saved { order: 1; }
+  .main    { order: 2; }
+  .sidebar { order: 3; }
+  .footer  { order: 4; }
+}
