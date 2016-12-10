@@ -25,7 +25,8 @@ export default class App extends Component {
       audioData: [0, 0, 0, 0, 0],
       recordedBeat: [],
       recordedName: '',
-      intervalID: 0
+      savedBeats: [],
+      intervalID: 0,
     };
   }
 
@@ -52,10 +53,13 @@ componentDidMount() {
         break;
       case 'r':
         this.startRecord();
+        break;
       default:
         break;
     }
   });
+
+  // fetch all of the saved user songs
 }
 
   // Web audio API cobbled together from various MDN articles
@@ -99,19 +103,36 @@ componentDidMount() {
       // -note- the time could also be utilized as a unique id number
       const time = new Date().getTime();
       this.setState({
-        recordedBeat: [time],
+        recordedBeat: [[time, this.state.instruments]],
       });
     }
   }
+  // gets a list of all the saved records for the given user
+  getSavedList() {
+    fetch(`/api/songs/all/${this.state.userID}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'GET',
+    })
+    .then(r => r.json())
+    .then((response) => {
+      console.log(response);
+      this.setState({
+        savedBeats: response.saved,
+      })
+    })
+    .catch(err => console.log(err));
+  }
 
   saveRecord() {
-    fetch('/save', {
+    fetch('/api/songs', {
       headers: {
         'Content-Type': 'application/json',
       },
       method: 'POST',
       body: JSON.stringify({
-        name: this.state.recordedName,
+        beatName: this.state.recordedName,
         beatData: this.state.recordedBeat,
         instruments: this.state.instruments,
         userID: this.state.userID
@@ -124,8 +145,24 @@ componentDidMount() {
     .catch(err => console.log(err));
   }
 
-  playRecord(id) {
-
+  // authenticate this first?
+  // id could be the timestamp...
+  loadRecord(id) {
+    fetch(`/api/songs/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'GET',
+    })
+    .then(r => r.json())
+    .then((response) => {
+      console.log(response.beatName);
+      this.setState({
+        recordedName: response.beatName,
+        recordedBeat: response.beatData
+      })
+    })
+    .catch(err => console.log(err));
   }
 
   render() {
