@@ -23,10 +23,15 @@ export default class App extends Component {
         'crash-acoustic'
       ],
       audioData: [0, 0, 0, 0, 0],
+      // variables for recording new tracks
       recordedBeat: [],
       recordedName: '',
       savedBeats: [],
-      intervalID: 0,
+      recording: false,
+      // variables for playback of tracks
+      iterCode: 0,
+      startTime: 0,
+      trackPos: 0
     };
 
     this.startRecord.bind(this);
@@ -69,6 +74,8 @@ componentDidMount() {
   // Web audio API cobbled together from various MDN articles
   // fetches the audio file from our api
   getAudio(audioID) {
+    if (this.state.recording) recordTap(audioID)
+
     const audioFile = this.state.instruments[audioID]
     const source = this.state.audioCTX.createBufferSource();
     const request = new XMLHttpRequest();
@@ -114,32 +121,69 @@ componentDidMount() {
     this.setState({ recordedName: e.target.value });
   }
 
-  // records each beat triggered by the user
-  recordBeat(beatId) {
-    // records the time offset from the start of the recording
-    const elapsedTime = new Date().getTime() - this.state.recordedBeat[0][0];
-    // sets the recorded array concatinated with the offset time and activated sound
-    // note: the 0 is a default value that will be replaced by the song id
+  // creates a new recording instance
+  startRecord() {
+    // a nested array is initialized with the current time
+    const startTime = new Date().getTime();
+    // first element of the nested array is initialized with defaults
+      // format: [trackID, soundName, beatID, timeStamp]
     this.setState({
-      recordedBeat: this.state.recordedBeat.concat([[0, beatId, elapsedTime]]),
+      recordedBeat: [[0, -1, -1, startTime]],
+      recording: true
     });
   }
 
-  // creates a new recording instance if there is not already one
-  startRecord() {
-    if (this.state.recordedBeat) {
-      // a nested array is initialized with the current time
-      const startTime = new Date().getTime();
-      // first element of the nested array is initialized with defaults
-      this.setState({
-        recordedBeat: [[0, 0, startTime]],
-      });
+  recordTapHandler(tapID) {
+    const offsetTime = new Date().getTime() - this.state.recordedBeat[0][0];
+    // sets the recorded array concatinated with the offset time and activated sound
+    // format: [trackID, soundName, beatID, timeStamp]
+    this.setState({
+      recordedBeat: this.state.recordedBeat.concat([[
+        0,
+        this.state.instruments[tapID],
+        tapID,
+        offsetTime
+      ]]),
+    });
+  }
+
+  stopRecord() {
+    this.setState({ recording: false });
+  }
+
+  clearRecord() {
+    this.setState({
+      recording: false,
+      recordedBeat: [],
+    });
+  }
+
+  startTrack() {
+    if (this.state.recordedBeat.length) {
+      const startTime = new Date().getTime()
+      const iterCode = setInterval(this.playRecord(), 1)
+      this.setState({ iterCode, startTime });
     }
   }
 
-
-
-  endRecord() {
+  // plays each nested array 'note' in the track sequentially over time
+  playTrack() {
+    const i = this.state.trackPos;
+    const t = this.state.startTime;
+    // ref for recordedBeat format: [trackID, soundName, beatID, timeStamp]
+    if (this.state.recordedBeat[i][3] <= new Date().getTime() - t) {
+      this.getAudio(this.state.RecordedBeat[i][1]);
+      // stops the recording at the end
+      if (this.state.recordedBeat.length === i + 1) {
+        clearInterval(this.state.interCode);
+      }
+      this.setState({
+        trackPos: this.state.trackPos + 1,
+      });
+    }
+    if (this.state.recordedBeat.length === i + 1){
+      clearInterval(this.state.interCode);
+    }
   }
 
   saveRecord() {
