@@ -14,6 +14,7 @@ export default class App extends Component {
 
     this.state = {
       userID: 0,
+      // substantiating interface for web audio API
       audioCTX: new (window.AudioContext || window.webkitAudioContext)(),
       instruments: [
         'hihat-acoustic01',
@@ -29,52 +30,64 @@ export default class App extends Component {
       savedBeats: [],
       recording: false,
       // variables for playback of tracks
-      iterCode: 0,
+      interCode: 0,
       startTime: 0,
-      trackPos: 0
+      trackPos: 1
     };
 
+    // binding functions as necessary
     this.startRecord.bind(this);
     this.stopRecord.bind(this);
     this.saveRecord.bind(this);
+    this.clearRecord.bind(this);
+    this.recordTapHandler.bind(this);
+    this.playTrack.bind(this);
+
   }
 
-componentDidMount() {
+  componentDidMount() {
   // for each keypress, make a http request for the selected audio
-  document.addEventListener('keydown', (e) => {
-    console.log(e.key);
+    document.addEventListener('keydown', (e) => {
+      console.log(e.key);
 
-    switch(e.key) {
-      case 'w':
-        this.getAudio(0);
-        break;
-      case 'a':
-        this.getAudio(1);
-        break;
-      case 's':
-        this.getAudio(2);
-        break;
-      case 'd':
-        this.getAudio(3);
-        break;
-      case 'f':
-        this.getAudio(4);
-        break;
-      case 'r':
-        this.startRecord();
-        break;
-      default:
-        break;
-    }
-  });
-
-  // fetch all of the saved user tracks
-}
+      switch (e.key) {
+        case 'w':
+          this.getAudio(0);
+          break;
+        case 'a':
+          this.getAudio(1);
+          break;
+        case 's':
+          this.getAudio(2);
+          break;
+        case 'd':
+          this.getAudio(3);
+          break;
+        case 'f':
+          this.getAudio(4);
+          break;
+        case 'r':
+          this.startRecord();
+          break;
+        case 't':
+          this.stopRecord();
+          break;
+        case 'y':
+          this.clearRecord();
+          break;
+        case 'e':
+          this.playTrack();
+          break;
+        default:
+          break;
+      }
+    });
+  }
 
   // Web audio API cobbled together from various MDN articles
   // fetches the audio file from our api
   getAudio(audioID) {
-    if (this.state.recording) recordTap(audioID)
+    if (this.state.recording) this.recordTapHandler(audioID);
 
     const audioFile = this.state.instruments[audioID]
     const source = this.state.audioCTX.createBufferSource();
@@ -85,13 +98,13 @@ componentDidMount() {
     request.responseType = 'arraybuffer';
 
     request.onload = () => {
-      let audioData = request.response;
+      const audioData = request.response;
       // decodes the arraybuffer data into audio
       this.state.audioCTX.decodeAudioData(audioData, (buffer) => {
         source.buffer = buffer;
         source.connect(this.state.audioCTX.destination);
       },
-      (e) => {"Error with decoding audio data" + e.err});
+      (e) => { `Error decoding audio data: ${e.err}` });
     };
     request.send();
     // starts the audio instance
@@ -123,18 +136,19 @@ componentDidMount() {
 
   // creates a new recording instance
   startRecord() {
+    console.log('starting recording');
     // a nested array is initialized with the current time
     const startTime = new Date().getTime();
     // first element of the nested array is initialized with defaults
       // format: [trackID, soundName, beatID, timeStamp]
     this.setState({
-      recordedBeat: [[0, -1, -1, startTime]],
-      recording: true
+      recordedBeat: [[0, '', -1, startTime]],
+      recording: true,
     });
   }
 
   recordTapHandler(tapID) {
-    const offsetTime = new Date().getTime() - this.state.recordedBeat[0][0];
+    const offsetTime = new Date().getTime() - this.state.recordedBeat[0][3];
     // sets the recorded array concatinated with the offset time and activated sound
     // format: [trackID, soundName, beatID, timeStamp]
     this.setState({
@@ -149,41 +163,49 @@ componentDidMount() {
 
   stopRecord() {
     this.setState({ recording: false });
+    console.log('stopped recording')
   }
 
   clearRecord() {
+    console.log('clearing recording')
     this.setState({
       recording: false,
       recordedBeat: [],
     });
   }
 
-  startTrack() {
-    if (this.state.recordedBeat.length) {
-      const startTime = new Date().getTime()
-      const iterCode = setInterval(this.playRecord(), 1)
-      this.setState({ iterCode, startTime });
-    }
-  }
-
-  // plays each nested array 'note' in the track sequentially over time
+  // starts playing the recorded track
   playTrack() {
-    const i = this.state.trackPos;
-    const t = this.state.startTime;
-    // ref for recordedBeat format: [trackID, soundName, beatID, timeStamp]
-    if (this.state.recordedBeat[i][3] <= new Date().getTime() - t) {
-      this.getAudio(this.state.RecordedBeat[i][1]);
-      // stops the recording at the end
-      if (this.state.recordedBeat.length === i + 1) {
-        clearInterval(this.state.interCode);
+    // need to nest this so I don't have to use a janky state iterator
+    let i = 1;
+
+    // plays each nested array 'note' in the track sequentially over time
+    const playTrackBeat = () => {
+      const t = this.state.startTime;
+      // ref for recordedBeat format: [trackID, soundName, beatID, timeStamp]
+      if (this.state.recordedBeat[i][3] <= new Date().getTime() - t) {
+        this.getAudio(this.state.recordedBeat[i][2]);
+        // stops the recording at the end of song
+        if (this.state.recordedBeat.length <= i + 1) {
+          console.log ('end of song');
+          clearInterval(this.state.interCode);
+        }
+        i += 1;
+        this.setState({
+          trackPos: i,
+        });
       }
-      this.setState({
-        trackPos: this.state.trackPos + 1,
-      });
-    }
-    if (this.state.recordedBeat.length === i + 1){
-      clearInterval(this.state.interCode);
-    }
+    };
+
+    const initTrack = () => {
+      console.log('playing recorded track')
+      if (this.state.recordedBeat) {
+        const startTime = new Date().getTime();
+        const interCode = setInterval(playTrackBeat, 1);
+        this.setState({ interCode, startTime });
+      }
+    };
+    initTrack();
   }
 
   saveRecord() {
@@ -220,7 +242,7 @@ componentDidMount() {
       console.log(response.beatName);
       this.setState({
         recordedName: response.beatName,
-        recordedBeat: response.beatData
+        recordedBeat: response.beatData,
       })
     })
     .catch(err => console.log(err));
