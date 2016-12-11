@@ -4,19 +4,19 @@ const TapControl = props => (
   <div className="tap-control">
     <button
       className="start-button"
-      onClick={() => props.startRecord()}
+      onClick={props.startRecord}
     >
       Start Recording
     </button>
     <button
       className="stop-button"
-      onClick={() => props.stopRecord()}
+      onClick={props.stopRecord}
     >
       Stop Recording
     </button>
     <button
       className="save-button"
-      onClick={() => props.saveRecord()}
+      onClick={props.saveRecord}
     >
       Save Track
     </button>
@@ -24,7 +24,7 @@ const TapControl = props => (
       className="new-track-name"
       type="text"
       name="trackName"
-      value=""
+      value={props.trackName}
       placeholder="My New Track"
       onChange={props.updateTrackName}
     />

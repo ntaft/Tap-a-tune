@@ -42,6 +42,7 @@ export default class App extends Component {
     this.clearRecord.bind(this);
     this.recordTapHandler.bind(this);
     this.playTrack.bind(this);
+    this.updateTrackName.bind(this);
 
   }
 
@@ -255,10 +256,11 @@ export default class App extends Component {
         <Sidebar />
         <TapBox />
         <TapControl
-          startRecord={this.startRecord}
-          stopRecord={this.stopRecord}
-          saveRecord={this.saveRecord}
+          startRecord={() => this.startRecord()}
+          stopRecord={() => this.stopRecord()}
+          saveRecord={() => this.saveRecord()}
           updateTrackName={e => this.updateTrackName(e)}
+          trackName={this.state.recordedName}
         />
         <SavedList />
         <Footer />
