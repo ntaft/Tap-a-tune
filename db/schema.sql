@@ -10,13 +10,13 @@ CREATE TABLE users (
   accessedDate TIMESTAMP
 );
 
-DROP TABLE IF EXISTS songs;
+DROP TABLE IF EXISTS tracks;
 
-CREATE TABLE songs (
-  id INT SERIAL PRIMARY KEY,
+CREATE TABLE tracks (
+  id SERIAL PRIMARY KEY,
   user_id INT REFERENCES users(id),
-  song_name VARCHAR(80),
-  instruments VARCHAR(255)[] -- just for reference
+  track_name VARCHAR(80),
+  instruments VARCHAR(255)[]
 );
 
 DROP TABLE IF EXISTS sounds;
@@ -25,16 +25,16 @@ CREATE TABLE sounds (
   id SERIAL PRIMARY KEY,
   name VARCHAR(80),
   file_name VARCHAR(80),
-  file_path VARCHAR(255) -- might be unnecessary if static
+  file_path VARCHAR(255)
 );
 
-DROP TABLE IF EXISTS song_data;
+DROP TABLE IF EXISTS track_data;
 
-CREATE TABLE song_data (
-  song_id INT REFERENCES songs(id),
+CREATE TABLE track_data (
+  track_id INT REFERENCES tracks(id),
   sound_id INT REFERENCES sounds(id),
-  beat_time INT, -- time from start
-  beat_id INT -- number 1-5 for each finger
+  beat_id INT,
+  beat_time INT
 );
 
 COMMIT;

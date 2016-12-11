@@ -4,7 +4,7 @@ const logger = require('morgan');
 const path = require('path');
 const bodyParser = require('body-parser');
 const fileRoute = require('./routes/files');
-const songRoute = require('./routes/songs');
+const trackRoute = require('./routes/tracks');
 const authRoute = require('./routes/auth');
 
 const app = express();
@@ -17,8 +17,8 @@ app.use(bodyParser.json());
 
 // route for serving audio files to Web Audio API
 app.use('/api/files', fileRoute);
-// route for storing and retrieving user song data
-app.use('/api/songs', songRoute);
+// route for storing and retrieving user track data
+app.use('/api/tracks', trackRoute);
 // route for user authentication
 app.use('/auth', authRoute);
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import TapBox from './TapBox/TapBox';
-import SavedItem from './SavedItem/SavedItem';
+import TapControl from './TapControl/TapControl';
 import SavedList from './SavedList/SavedList';
 import Sidebar from './Sidebar/Sidebar';
 import './App.css';
@@ -28,6 +28,10 @@ export default class App extends Component {
       savedBeats: [],
       intervalID: 0,
     };
+
+    this.startRecord.bind(this);
+    this.stopRecord.bind(this);
+    this.saveRecord.bind(this);
   }
 
 componentDidMount() {
@@ -59,7 +63,7 @@ componentDidMount() {
     }
   });
 
-  // fetch all of the saved user songs
+  // fetch all of the saved user tracks
 }
 
   // Web audio API cobbled together from various MDN articles
@@ -87,29 +91,9 @@ componentDidMount() {
     source.start(0);
   }
 
-  recordBeat(beatID) {
-    // records the time offset from the start of the recording
-    const time = new Date().getTime() - this.state.recordedBeat[0][0];
-    // sets the recorded array concatinated with the offset time and activated sound
-    this.setState({
-      recordedBeat: this.state.recordedBeat.concat([[time, beatID]]),
-    });
-  }
-
-  // creates a new recording instance if there is not already one
-  startRecord() {
-    if (this.state.recordedBeat) {
-      // a nested array is initialized with the current time
-      // -note- the time could also be utilized as a unique id number
-      const time = new Date().getTime();
-      this.setState({
-        recordedBeat: [[time, this.state.instruments]],
-      });
-    }
-  }
   // gets a list of all the saved records for the given user
   getSavedList() {
-    fetch(`/api/songs/all/${this.state.userID}`, {
+    fetch(`/api/tracks/all/${this.state.userID}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -125,15 +109,48 @@ componentDidMount() {
     .catch(err => console.log(err));
   }
 
+  // handles the updating of the new track name form
+  updateTrackName(e) {
+    this.setState({ recordedName: e.target.value });
+  }
+
+  // records each beat triggered by the user
+  recordBeat(beatId) {
+    // records the time offset from the start of the recording
+    const elapsedTime = new Date().getTime() - this.state.recordedBeat[0][0];
+    // sets the recorded array concatinated with the offset time and activated sound
+    // note: the 0 is a default value that will be replaced by the song id
+    this.setState({
+      recordedBeat: this.state.recordedBeat.concat([[0, beatId, elapsedTime]]),
+    });
+  }
+
+  // creates a new recording instance if there is not already one
+  startRecord() {
+    if (this.state.recordedBeat) {
+      // a nested array is initialized with the current time
+      const startTime = new Date().getTime();
+      // first element of the nested array is initialized with defaults
+      this.setState({
+        recordedBeat: [[0, 0, startTime]],
+      });
+    }
+  }
+
+
+
+  endRecord() {
+  }
+
   saveRecord() {
-    fetch('/api/songs', {
+    fetch('/api/tracks', {
       headers: {
         'Content-Type': 'application/json',
       },
       method: 'POST',
       body: JSON.stringify({
-        beatName: this.state.recordedName,
-        beatData: this.state.recordedBeat,
+        name: this.state.recordedName,
+        data: this.state.recordedBeat,
         instruments: this.state.instruments,
         userID: this.state.userID
       })
@@ -148,7 +165,7 @@ componentDidMount() {
   // authenticate this first?
   // id could be the timestamp...
   loadRecord(id) {
-    fetch(`/api/songs/${id}`, {
+    fetch(`/api/tracks/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -171,6 +188,12 @@ componentDidMount() {
         <Header />
         <Sidebar />
         <TapBox />
+        <TapControl
+          startRecord={this.startRecord}
+          stopRecord={this.stopRecord}
+          saveRecord={this.saveRecord}
+          updateTrackName={e => this.updateTrackName(e)}
+        />
         <SavedList />
         <Footer />
       </div>
