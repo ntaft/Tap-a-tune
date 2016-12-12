@@ -22,10 +22,10 @@ CREATE TABLE tracks (
 DROP TABLE IF EXISTS sounds CASCADE;
 
 CREATE TABLE sounds (
-  id SERIAL PRIMARY KEY,
   name VARCHAR(80),
   file_name VARCHAR(80),
-  file_path VARCHAR(255)
+  file_path VARCHAR(255),
+  file_category VARCHAR(80)
 );
 
 DROP TABLE IF EXISTS track_data CASCADE;

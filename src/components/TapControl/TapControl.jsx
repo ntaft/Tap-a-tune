@@ -15,6 +15,12 @@ const TapControl = props => (
       Stop Recording
     </button>
     <button
+      className="play-button"
+      onClick={props.playRecord}
+    >
+      Save Track
+    </button>
+    <button
       className="save-button"
       onClick={props.saveRecord}
     >

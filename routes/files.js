@@ -1,4 +1,5 @@
 const fileRouter = require('express').Router();
+const { getSoundList } = require('../models/files');
 
 // sends a file by name for the web audio api
 // use either a psql lookup table or hard links
@@ -8,12 +9,13 @@ const fileRouter = require('express').Router();
 
 fileRouter.get('/:filename', (req, res) => {
   console.log(req.params.filename);
-  res.sendFile(`/Users/ntaft/Desktop/Samples/${req.params.filename}.wav`);
+  res.sendFile(`/Users/ntaft/code/wdi/projects/project4/Tappity/sounds/${req.params.filename}.wav`);
 });
 
-// lists all avaliable files
-fileRouter.get('/', (req, res) => {
-  res.sendFile('/Users/ntaft/code/wdi/projects/project4/Tappity/public/audio-demo.html');
+// lists all avaliable files stored locally (or even remotely)
+// including names and links to file paths, etc.
+fileRouter.get('/', getSoundList, (req, res) => {
+  res.json(res.soundList);
 });
 
 module.exports = fileRouter;

@@ -3,7 +3,7 @@ import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import TapBox from './TapBox/TapBox';
 import TapControl from './TapControl/TapControl';
-import SavedList from './SavedList/SavedList';
+import SavedTrackList from './SavedTrackList/SavedTrackList';
 import Sidebar from './Sidebar/Sidebar';
 import './App.css';
 
@@ -23,16 +23,17 @@ export default class App extends Component {
         'clap-tape',
         'crash-acoustic'
       ],
-      audioData: [0, 0, 0, 0, 0],
+      audioList: [],
+      // buffer for audio data (may be unnecessary)
+      // audioData: [0, 0, 0, 0, 0],
       // variables for recording new tracks
-      recordedBeat: [],
+      trackData: [],
       recordedName: '',
-      savedBeats: [],
+      savedTracks: [],
       recording: false,
       // variables for playback of tracks
-      interCode: 0,
-      startTime: 0,
-      trackPos: 1
+      // unnecessary unless we need to pass as props
+      // trackPos: 1
     };
 
     // binding functions as necessary
@@ -43,10 +44,13 @@ export default class App extends Component {
     this.recordTapHandler.bind(this);
     this.playTrack.bind(this);
     this.updateTrackName.bind(this);
-
+    this.loadTrack.bind(this);
   }
 
   componentDidMount() {
+    // retrieves a saved list of all the user's songs
+    this.getSavedList();
+
   // for each keypress, make a http request for the selected audio
     document.addEventListener('keydown', (e) => {
       console.log(e.key);
@@ -112,6 +116,25 @@ export default class App extends Component {
     source.start(0);
   }
 
+  // gets a list of all the audio files avaliable
+  getAudioList() {
+    fetch('/api/files/', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'GET',
+    })
+    .then(r => r.json())
+    .then((response) => {
+      console.log(response);
+      this.setState({
+        audioList: response,
+      })
+    })
+    .catch(err => console.log(err));
+  }
+
+
   // gets a list of all the saved records for the given user
   getSavedList() {
     fetch(`/api/tracks/all/${this.state.userId}`, {
@@ -124,7 +147,7 @@ export default class App extends Component {
     .then((response) => {
       console.log(response);
       this.setState({
-        savedBeats: response.saved,
+        savedTracks: response,
       })
     })
     .catch(err => console.log(err));
@@ -143,17 +166,17 @@ export default class App extends Component {
     // first element of the nested array is initialized with timestamp
       // format: [trackID, soundName, beatID, timeStamp]
     this.setState({
-      recordedBeat: [[0, 'initializing', -1, startTime]],
+      trackData: [[0, 'initializing', -1, startTime]],
       recording: true,
     });
   }
 
   recordTapHandler(tapID) {
-    const offsetTime = new Date().getTime() - this.state.recordedBeat[0][3];
+    const offsetTime = new Date().getTime() - this.state.trackData[0][3];
     // sets the recorded array concatinated with the offset time and activated sound
     // format: [trackID, soundName, beatID, timeStamp]
     this.setState({
-      recordedBeat: this.state.recordedBeat.concat([[
+      trackData: this.state.trackData.concat([[
         0,
         this.state.instruments[tapID],
         tapID,
@@ -171,7 +194,7 @@ export default class App extends Component {
     console.log('clearing recording')
     this.setState({
       recording: false,
-      recordedBeat: [],
+      trackData: [],
     });
   }
 
@@ -186,25 +209,26 @@ export default class App extends Component {
     // plays each nested array 'note' in the track sequentially over time
     const playTrackBeat = () => {
       const t = startTime;
-      // ref for recordedBeat format: [trackID, soundName, beatID, timeStamp]
-      if (this.state.recordedBeat[i][3] <= new Date().getTime() - t) {
-        this.getAudio(this.state.recordedBeat[i][2]);
+      // ref for trackData format: [trackID, soundName, beatID, timeStamp]
+      if (this.state.trackData[i][3] <= new Date().getTime() - t) {
+        this.getAudio(this.state.trackData[i][2]);
         // stops the recording at the end of song
-        if (this.state.recordedBeat.length <= i + 1) {
+        if (this.state.trackData.length <= i + 1) {
           console.log ('end of song');
           clearInterval(interCode);
         }
         i += 1;
-        this.setState({
-          trackPos: i,
-        });
+        // this.setState({
+        //   trackPos: i,
+        // });
       }
     };
 
     // sets the interval of the song playing
     const initTrack = () => {
       console.log('playing recorded track');
-      if (this.state.recordedBeat) {
+      if (this.state.trackData) {
+        // note: could use multiple setIntervals if this is too slow...
         interCode = setInterval(playTrackBeat, 1);
       }
     };
@@ -214,7 +238,7 @@ export default class App extends Component {
   // saves the record to the db through our api
   saveRecord() {
     // gets rid of the annoyingly large timestamp value
-    const tapData = this.state.recordedBeat;
+    const tapData = this.state.trackData;
     tapData[0][3] = 0;
     // posts the data to the api
     fetch('/api/tracks', {
@@ -236,9 +260,8 @@ export default class App extends Component {
     .catch(err => console.log(err));
   }
 
-  // authenticate this first?
-  // id could be the timestamp...
-  loadRecord(id) {
+  // loads all the beat data from a selected track
+  loadTrack(id) {
     fetch(`/api/tracks/${id}`, {
       headers: {
         'Content-Type': 'application/json',
@@ -250,8 +273,27 @@ export default class App extends Component {
       console.log(response.beatName);
       this.setState({
         recordedName: response.beatName,
-        recordedBeat: response.beatData,
+        trackData: response.beatData,
       })
+    })
+    .catch(err => console.log(err));
+  }
+
+  deleteTrack(id) {
+    fetch(`/api/tracks/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+    })
+    .then(r => r.json())
+    .then((response) => {
+      console.log(response);
+      if (response.ok) {
+        // remove the list item from savedTracks if successful
+        const newTrackList = this.state.savedTracks.filter(track => !(track.id === id))
+        this.setState({ savedTracks: newTrackList })
+      }
     })
     .catch(err => console.log(err));
   }
@@ -262,14 +304,23 @@ export default class App extends Component {
         <Header />
         <Sidebar />
         <TapBox />
+        <TapList
+          audioList={this.state.audioList}
+        />
         <TapControl
           startRecord={() => this.startRecord()}
           stopRecord={() => this.stopRecord()}
+          playRecord={() => this.playRecord()}
           saveRecord={() => this.saveRecord()}
           updateTrackName={e => this.updateTrackName(e)}
           trackName={this.state.recordedName}
         />
-        <SavedList />
+        <SavedTrackList
+          loadTrack={e => this.loadTrack(e.target.id)}
+          deleteTrack={e => this.deleteTrack(e.target.id)}
+          savedTracks={this.state.savedTracks}
+        />
+
         <Footer />
       </div>
     );
