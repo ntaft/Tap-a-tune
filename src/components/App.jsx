@@ -13,7 +13,7 @@ export default class App extends Component {
     super();
 
     this.state = {
-      userID: 0,
+      userId: 1,
       // substantiating interface for web audio API
       audioCTX: new (window.AudioContext || window.webkitAudioContext)(),
       instruments: [
@@ -114,7 +114,7 @@ export default class App extends Component {
 
   // gets a list of all the saved records for the given user
   getSavedList() {
-    fetch(`/api/tracks/all/${this.state.userID}`, {
+    fetch(`/api/tracks/all/${this.state.userId}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -140,10 +140,10 @@ export default class App extends Component {
     console.log('starting recording');
     // a nested array is initialized with the current time
     const startTime = new Date().getTime();
-    // first element of the nested array is initialized with defaults
+    // first element of the nested array is initialized with timestamp
       // format: [trackID, soundName, beatID, timeStamp]
     this.setState({
-      recordedBeat: [[0, '', -1, startTime]],
+      recordedBeat: [[0, 'initializing', -1, startTime]],
       recording: true,
     });
   }
@@ -177,19 +177,22 @@ export default class App extends Component {
 
   // starts playing the recorded track
   playTrack() {
-    // need to nest this so I don't have to use a janky state iterator
+    // need to nest this to avoid unnecessary setStates
+    // starts at 1 to skip the initialized array values
     let i = 1;
+    const startTime = new Date().getTime();
+    let interCode = 0;
 
     // plays each nested array 'note' in the track sequentially over time
     const playTrackBeat = () => {
-      const t = this.state.startTime;
+      const t = startTime;
       // ref for recordedBeat format: [trackID, soundName, beatID, timeStamp]
       if (this.state.recordedBeat[i][3] <= new Date().getTime() - t) {
         this.getAudio(this.state.recordedBeat[i][2]);
         // stops the recording at the end of song
         if (this.state.recordedBeat.length <= i + 1) {
           console.log ('end of song');
-          clearInterval(this.state.interCode);
+          clearInterval(interCode);
         }
         i += 1;
         this.setState({
@@ -198,18 +201,22 @@ export default class App extends Component {
       }
     };
 
+    // sets the interval of the song playing
     const initTrack = () => {
-      console.log('playing recorded track')
+      console.log('playing recorded track');
       if (this.state.recordedBeat) {
-        const startTime = new Date().getTime();
-        const interCode = setInterval(playTrackBeat, 1);
-        this.setState({ interCode, startTime });
+        interCode = setInterval(playTrackBeat, 1);
       }
     };
     initTrack();
   }
 
+  // saves the record to the db through our api
   saveRecord() {
+    // gets rid of the annoyingly large timestamp value
+    const tapData = this.state.recordedBeat;
+    tapData[0][3] = 0;
+    // posts the data to the api
     fetch('/api/tracks', {
       headers: {
         'Content-Type': 'application/json',
@@ -217,9 +224,9 @@ export default class App extends Component {
       method: 'POST',
       body: JSON.stringify({
         name: this.state.recordedName,
-        data: this.state.recordedBeat,
+        data: tapData,
         instruments: this.state.instruments,
-        userID: this.state.userID
+        userId: this.state.userId
       })
     })
     .then(r => r.json())

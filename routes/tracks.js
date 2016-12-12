@@ -1,22 +1,28 @@
+const { showUserTracks, saveTrack, getTrackData, editTrack, deleteTrack } = require('../models/tracks');
+
 const trackRouter = require('express').Router();
 
-trackRouter.get('/:id', (req, res) => {
-  res.json('return track by id');
+trackRouter.get('/all/:id', showUserTracks, (req, res) => {
+  res.json(res.tracks);
 });
 
-trackRouter.get('/all/:id', (req, res) => {
-  res.json('returns list of all user tracks');
+trackRouter.get('/:id', getTrackData, (req, res) => {
+  res.json(res.data);
 });
 
-trackRouter.post('/', (req, res) => {
-  res.status(200);
-  console.log(req.body);
-  res.json(`saving track id #${req.body.id}`);
-});
-
-trackRouter.delete('/:id', (req, res) => {
+trackRouter.delete('/:id', deleteTrack, (req, res) => {
   res.status(200);
   res.json(`deleting track with id #${req.params.id}`);
+});
+
+trackRouter.put('/:id', editTrack, (req, res) => {
+  res.status(200);
+  res.json(`modifying track with id #${req.params.id}`);
+});
+
+trackRouter.post('/', saveTrack, (req, res) => {
+  // res.status(200);
+  res.json(res.body);
 });
 
 module.exports = trackRouter;

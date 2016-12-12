@@ -25,6 +25,6 @@ app.use('/auth', authRoute);
 // sets static path to dist folder
 app.use(express.static(path.join(__dirname, 'dist')));
 
-app.listen(port, () => console.log('tappity tap tapping 🤘 ', port));
+app.listen(port, () => console.log('tappity tap tapping 🖐 ', port));
 
 module.exports = app;
