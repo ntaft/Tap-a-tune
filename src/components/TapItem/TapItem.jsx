@@ -2,7 +2,21 @@ import React, { Component } from 'react';
 
 class TapItem extends Component {
 
-  
+  listSounds() {
+    this.props.audioList.map((sound, i) => {
+      return (
+        <button
+          key={i}
+          tapZoneKey={this.props.key}
+          setInstrument={sound.name}
+          className="list-item"
+          onClick={this.props.selectInstrument}
+        >
+          <span>{sound.name}</span>
+        </button>
+      )
+    })
+  }
 
   render() {
     return (
@@ -13,7 +27,7 @@ class TapItem extends Component {
             onClick={props.dropSoundMenu}
           >Select an instrument</button>
           <div className="drop-content">
-            {props.soundMenuList}
+            {this.listSounds()}
           </div>
         </div>
       </div>

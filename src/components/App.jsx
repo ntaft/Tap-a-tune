@@ -3,6 +3,7 @@ import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import TapBox from './TapBox/TapBox';
 import TapControl from './TapControl/TapControl';
+import TapList from './TapList/TapList';
 import SavedTrackList from './SavedTrackList/SavedTrackList';
 import Sidebar from './Sidebar/Sidebar';
 import './App.css';
@@ -13,6 +14,7 @@ export default class App extends Component {
     super();
 
     this.state = {
+      // default user id (1 for testing)
       userId: 1,
       // substantiating interface for web audio API
       audioCTX: new (window.AudioContext || window.webkitAudioContext)(),
@@ -45,11 +47,13 @@ export default class App extends Component {
     this.playTrack.bind(this);
     this.updateTrackName.bind(this);
     this.loadTrack.bind(this);
+    this.getAudioList.bind(this);
   }
 
   componentDidMount() {
     // retrieves a saved list of all the user's songs
     this.getSavedList();
+    this.getAudioList();
 
   // for each keypress, make a http request for the selected audio
     document.addEventListener('keydown', (e) => {
@@ -298,6 +302,16 @@ export default class App extends Component {
     .catch(err => console.log(err));
   }
 
+  // changes the value of a given 'instrument' being played via user selection
+  selectInstrument(e) {
+    const newInst = this.state.instruments;
+    console.log(e.target.tapZoneKey, e.target.setInstrument);
+    newInst[e.target.tapZoneKey] = e.target.setInstrument;
+    this.setState({
+      instruments: newInst,
+    });
+  }
+
   render() {
     return (
       <div className="flex-wrapper">
@@ -306,6 +320,8 @@ export default class App extends Component {
         <TapBox />
         <TapList
           audioList={this.state.audioList}
+          selectInstrument={e => this.selectInstrument(e)}
+          instruments={this.state.instruments}
         />
         <TapControl
           startRecord={() => this.startRecord()}
