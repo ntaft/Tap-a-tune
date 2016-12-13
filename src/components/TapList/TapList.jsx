@@ -11,14 +11,16 @@ class TapList extends Component {
           className="drop-sounds"
           onClick={() => this.props.toggleSoundMenu(i)}
         >Select an instrument</button>
-        <TapItem
-          key={i}
-          id={i}
-          instrument={this.instrument}
-          className={this.props.toggleMenu[i] ? 'sound-menu drop' : 'sound-menu'}
-          selectInstrument={this.props.selectInstrument}
-          audioList={this.props.audioList}
-        />
+        <div className={this.props.toggleMenu[i] ? "sound-menu drop" : "sound-menu hidden"} >
+          <TapItem
+            key={i}
+            id={i}
+            className="tap-item"
+            instrument={this.instrument}
+            selectInstrument={this.props.selectInstrument}
+            audioList={this.props.audioList}
+          />
+        </div>
       </div>
     );
   }

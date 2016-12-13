@@ -1,0 +1,19 @@
+.list-item {
+  background-color: 'red';
+  border-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.drop-content {
+  overflow: scroll;
+  background-color: 'red';
+  margin: 0;
+  padding: 0;
+}
+
+.tap-item {
+  margin: 0;
+  background-color: 'red';
+  padding: 0;
+}

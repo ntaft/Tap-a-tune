@@ -481,9 +481,13 @@ export default class App extends Component {
   }
 
   toggleSoundMenu(id) {
-    console.log('toggling menu')
-    const toggled = this.state.toggleMenu[id];
-    toggled[id] ? toggled[id] = false : toggled[id] = true;
+    const toggled = this.state.toggleMenu;
+    if (toggled[id]) {
+      toggled[id] = false;
+    } else {
+      toggled[id] = true;
+    }
+    console.log('toggling menu', toggled[id])
     this.setState({
       toggleMenu: toggled,
     });
