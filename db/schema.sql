@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS tracks CASCADE;
 
 CREATE TABLE tracks (
   id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users(id),
+  user_id INT,
   track_name VARCHAR(80),
   instruments VARCHAR(510)[]
 );
