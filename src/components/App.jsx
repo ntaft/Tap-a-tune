@@ -38,9 +38,6 @@ export default class App extends Component {
       savedTracks: [],
       recording: false,
       toggleMenu: [false, false, false, false, false],
-      // variables for playback of tracks
-      // unnecessary unless we need to pass as props
-      // trackPos: 1
     };
 
     // binding functions as necessary
@@ -481,16 +478,21 @@ export default class App extends Component {
   }
 
   toggleSoundMenu(id) {
-    const toggled = this.state.toggleMenu;
+    let toggled = this.state.toggleMenu;
     if (toggled[id]) {
       toggled[id] = false;
     } else {
+      toggled = toggled.map(i => false);
       toggled[id] = true;
     }
     console.log('toggling menu', toggled[id])
     this.setState({
       toggleMenu: toggled,
     });
+  }
+
+  triggerSound(id) {
+    this.getAudio(id);
   }
 
   render() {
@@ -514,6 +516,7 @@ export default class App extends Component {
           instruments={this.state.instruments}
           toggleMenu={this.state.toggleMenu}
           toggleSoundMenu={this.toggleSoundMenu.bind(this)}
+          triggerSound={this.triggerSound.bind(this)}
         />
         <TapControl
           startRecord={() => this.startRecord()}

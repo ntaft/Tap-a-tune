@@ -9,6 +9,7 @@ class TapList extends Component {
       <div
         className="tap-zone"
         style={{backgroundColor: 'rgb(200, 200, 200)'}}
+        onClick={() => this.props.triggerSound(i)}
         >
         <button
           style={{backgroundColor: 'transparent'}}
