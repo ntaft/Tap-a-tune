@@ -16,9 +16,9 @@ const TapControl = props => (
     </button>
     <button
       className="play-button"
-      onClick={props.playRecord}
+      onClick={props.playTrack}
     >
-      Save Track
+      Play Track
     </button>
     <button
       className="save-button"

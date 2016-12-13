@@ -7,7 +7,8 @@ trackRouter.get('/all/:id', showUserTracks, (req, res) => {
 });
 
 trackRouter.get('/:id', getTrackData, (req, res) => {
-  res.json(res.data);
+  res.json(res.trackData);
+  console.log(`sending track data with id #${req.params.id}`);
 });
 
 trackRouter.delete('/:id', deleteTrack, (req, res) => {

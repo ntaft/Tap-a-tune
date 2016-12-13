@@ -33,6 +33,7 @@ export default class App extends Component {
       recordedName: '',
       savedTracks: [],
       recording: false,
+      toggleMenu: [false, false, false, false, false],
       // variables for playback of tracks
       // unnecessary unless we need to pass as props
       // trackPos: 1
@@ -47,14 +48,17 @@ export default class App extends Component {
     this.playTrack.bind(this);
     this.updateTrackName.bind(this);
     this.loadTrack.bind(this);
+    this.deleteTrack.bind(this);
     this.getAudioList.bind(this);
+    this.toggleSoundMenu.bind(this);
   }
 
+  componentWillMount() {
+    this.getAudioList();
+  }
   componentDidMount() {
     // retrieves a saved list of all the user's songs
     this.getSavedList();
-    this.getAudioList();
-
   // for each keypress, make a http request for the selected audio
     document.addEventListener('keydown', (e) => {
       console.log(e.key);
@@ -254,7 +258,7 @@ export default class App extends Component {
         name: this.state.recordedName,
         data: tapData,
         instruments: this.state.instruments,
-        userId: this.state.userId
+        userId: this.state.userId,
       })
     })
     .then(r => r.json())
@@ -274,13 +278,13 @@ export default class App extends Component {
     })
     .then(r => r.json())
     .then((response) => {
-      console.log(response.beatName);
-      this.setState({
-        recordedName: response.beatName,
-        trackData: response.beatData,
-      })
+      // needs to convert back to a nested array
+      // adapted from a clever method posted here: https://stackoverflow.com/questions/6857468/converting-a-js-object-to-an-array
+      const arrData = response.map(obj =>
+      Object.keys(obj).map(key => obj[key]));
+      this.setState({ trackData: arrData });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
   }
 
   deleteTrack(id) {
@@ -303,12 +307,19 @@ export default class App extends Component {
   }
 
   // changes the value of a given 'instrument' being played via user selection
-  selectInstrument(e) {
+  selectInstrument(name, id) {
     const newInst = this.state.instruments;
-    console.log(e.target.tapZoneKey, e.target.setInstrument);
-    newInst[e.target.tapZoneKey] = e.target.setInstrument;
+    newInst[id] = name;
     this.setState({
       instruments: newInst,
+    })
+  }
+
+  toggleSoundMenu(id) {
+    const toggled = this.state.toggleMenu;
+    toggled[id] ? toggled[id] = false : toggled[id] = true;
+    this.setState({
+      toggleMenu: toggled,
     });
   }
 
@@ -320,20 +331,23 @@ export default class App extends Component {
         <TapBox />
         <TapList
           audioList={this.state.audioList}
-          selectInstrument={e => this.selectInstrument(e)}
+          selectInstrument={this.selectInstrument}
           instruments={this.state.instruments}
+          toggleMenu={this.state.toggleMenu}
+          toggleSoundMenu={this.toggleSoundMenu}
         />
         <TapControl
           startRecord={() => this.startRecord()}
           stopRecord={() => this.stopRecord()}
-          playRecord={() => this.playRecord()}
+          playTrack={() => this.playTrack()}
           saveRecord={() => this.saveRecord()}
           updateTrackName={e => this.updateTrackName(e)}
           trackName={this.state.recordedName}
         />
         <SavedTrackList
-          loadTrack={e => this.loadTrack(e.target.id)}
-          deleteTrack={e => this.deleteTrack(e.target.id)}
+          // there is an issue with loadTrack auto-firing
+          loadTrack={this.loadTrack.bind(this)}
+          deleteTrack={this.deleteTrack}
           savedTracks={this.state.savedTracks}
         />
 

@@ -5,15 +5,11 @@ const SavedTrackItem = props => (
     <h3>{props.trackName}</h3>
     <button
       className="load"
-      key={props.key}
-      id={props.id}
-      onClick={props.loadTrack()}
+      onClick={() => props.loadTrack(props.id)}
     >Load Track</button>
     <button
       className="delete"
-      key={props.key}
-      id={props.id}
-      onClick={props.deleteTrack()}
+      onClick={() => props.deleteTrack(props.id)}
     >Delete Track</button>
   </div>
   );

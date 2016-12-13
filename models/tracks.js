@@ -35,9 +35,9 @@ function saveTrack(req, res, next) {
 // returns all data from a track based on the track ID
 function getTrackData(req, res, next) {
   db.any(`SELECT * FROM track_data
-    WHERE track_id = $1;`, req.params.id)
-    .then((trackData) => {
-      res.data = trackData;
+    WHERE track_id = $/id/`, req.params)
+    .then((data) => {
+      res.trackData = data;
       next();
     })
     .catch(err => next(err));

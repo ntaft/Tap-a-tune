@@ -2,37 +2,28 @@ import React, { Component } from 'react';
 
 class TapItem extends Component {
 
+  // creates a list of avaliable sounds to choose from, and sets it when selected
   listSounds() {
-    this.props.audioList.map((sound, i) => {
-      return (
+    return this.props.audioList.map((sound, i) =>
+      <div
+        key={i}
+        className="drop-content"
+      >
         <button
-          key={i}
-          tapZoneKey={this.props.key}
-          setInstrument={sound.name}
           className="list-item"
-          onClick={this.props.selectInstrument}
-        >
-          <span>{sound.name}</span>
-        </button>
-      )
-    })
+          onClick={() => this.props.selectInstrument(sound.name, this.props.id)}
+        >{sound.name}</button>
+      </div>
+      );
   }
 
   render() {
     return (
-      <div className="tap-item">
-        <div className="drop-menu">
-          <button
-            className="drop-sounds"
-            onClick={props.dropSoundMenu}
-          >Select an instrument</button>
-          <div className="drop-content">
-            {this.listSounds()}
-          </div>
-        </div>
+      <div className="drop-menu">
+        {this.listSounds()}
       </div>
-      )
-    }
+    );
+  }
 }
 
 export default TapItem;

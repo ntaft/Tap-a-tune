@@ -3,7 +3,7 @@ import SavedTrackItem from '../SavedTrackItem/SavedTrackItem';
 
 class SavedTrackList extends Component {
   renderSavedList() {
-    if (this.props.savedTracks) {
+    if (this.props.savedTracks.length > 0) {
       return this.props.savedTracks.map((track, i) =>
         <SavedTrackItem
           key={i}
@@ -13,7 +13,7 @@ class SavedTrackList extends Component {
           loadTrack={this.props.loadTrack}
           deleteTrack={this.props.deleteTrack}
         />
-      )
+      );
     }
   }
 

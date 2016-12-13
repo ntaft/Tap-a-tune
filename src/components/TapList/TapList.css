@@ -3,3 +3,17 @@
   width: 100px;
   background-color: "red";
 }
+
+.tap-menu {
+  height: 0;
+  width: 0;
+  -webkit-transition: width 1s, height 2s;
+  transition: width 1s, height 1s
+}
+
+.drop {
+  height: 400px;
+  width: 150px;
+  overflow: scroll;
+
+}
