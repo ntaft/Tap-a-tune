@@ -278,7 +278,7 @@ export default class App extends Component {
     })
     .then(r => r.json())
     .then((response) => {
-      // needs to convert back to a nested array
+      // needs to convert back to an ordered nested array
       // adapted from a clever method posted here: https://stackoverflow.com/questions/6857468/converting-a-js-object-to-an-array
       const arrData = response.map(obj =>
       Object.keys(obj).map(key => obj[key]));
@@ -331,10 +331,10 @@ export default class App extends Component {
         <TapBox />
         <TapList
           audioList={this.state.audioList}
-          selectInstrument={this.selectInstrument}
+          selectInstrument={this.selectInstrument.bind(this)}
           instruments={this.state.instruments}
           toggleMenu={this.state.toggleMenu}
-          toggleSoundMenu={this.toggleSoundMenu}
+          toggleSoundMenu={this.toggleSoundMenu.bind(this)}
         />
         <TapControl
           startRecord={() => this.startRecord()}
@@ -347,7 +347,7 @@ export default class App extends Component {
         <SavedTrackList
           // there is an issue with loadTrack auto-firing
           loadTrack={this.loadTrack.bind(this)}
-          deleteTrack={this.deleteTrack}
+          deleteTrack={this.deleteTrack.bind(this)}
           savedTracks={this.state.savedTracks}
         />
 
