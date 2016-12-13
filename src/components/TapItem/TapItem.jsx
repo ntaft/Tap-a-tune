@@ -6,15 +6,12 @@ class TapItem extends Component {
   // creates a list of avaliable sounds to choose from, and sets it when selected
   listSounds() {
     return this.props.audioList.map((sound, i) =>
-      <div
-        key={i}
-        className="drop-content"
-      >
         <button
+          key={i}
+          style={{backgroundColor: 'rgba(255, 10, 10, 0)'}}
           className="list-item"
           onClick={() => this.props.selectInstrument(sound.name, this.props.id)}
         >{sound.name}</button>
-      </div>
       );
   }
 

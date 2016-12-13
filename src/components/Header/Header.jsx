@@ -1,10 +1,14 @@
 import React from 'react';
+import './Header.css'
 
 const Header = props => (
   <div
     className="header"
-  >
-    <h1>Tappity</h1>
+  ><img
+    src="http://freevector.co/wp-content/uploads/2013/05/56093-triple-tap-of-three-fingers-of-a-hand-outlined-gesture-symbol-200x200.png"
+    className="logo"
+  />
+    <span>Tappity</span>
     <button className="login-buttons">dummy-drop</button>
     <input
       type="text"

@@ -1,9 +1,16 @@
 .tap-zone {
   height: 150px;
-  width: 300px;
-  background-color: "red";
+  width: 150px;
+  background-image: url("https://res.com/sites/default/files/block_icon_fingerprint_red.png");
   position: relative;
   z-index: 10;
+  display: block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 50%;
+  background-color: 'gray';
+  float: left;
 }
 
 .hidden {
@@ -13,14 +20,28 @@
 
 .sound-menu {
   margin: 0;
+  padding: 0;
   height: 0;
-  width: 150px;
+  width: 50px;
   -webkit-transition: width .5s, height .5s;
   transition: width .5s, height .5s;
+  background-color: rgba(200, 10, 10, 0.5);
+
 }
 
 .drop {
   height: 300px;
   width: 200px;
   overflow: scroll;
+}
+
+.drop-sounds {
+  height: 50px;
+  width: 50px;
+  border-style: none;
+  background-color: 'transparent';
+  background-image: url("https://cdn3.iconfinder.com/data/icons/buttons/512/Icon_11-512.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }

@@ -45,3 +45,7 @@
   .sidebar { order: 3; }
   .footer  { order: 4; }
 }
+
+button {
+  border-style: none;
+}
