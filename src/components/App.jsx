@@ -15,7 +15,11 @@ export default class App extends Component {
 
     this.state = {
       // default user id (1 for testing)
-      userId: 1,
+      userId: 0,
+      loginName: '',
+      loginPass: '',
+      signupName: '',
+      signupPass: '',
       // substantiating interface for web audio API
       audioCTX: new (window.AudioContext || window.webkitAudioContext)(),
       instruments: [
@@ -79,23 +83,169 @@ export default class App extends Component {
         case 'f':
           this.getAudio(4);
           break;
-        case 'r':
-          this.startRecord();
-          break;
-        case 't':
-          this.stopRecord();
-          break;
-        case 'y':
-          this.clearRecord();
-          break;
-        case 'e':
-          this.playTrack();
-          break;
+        // case 'r':
+        //   this.startRecord();
+        //   break;
+        // case 't':
+        //   this.stopRecord();
+        //   break;
+        // case 'y':
+        //   this.clearRecord();
+        //   break;
+        // case 'e':
+        //   this.playTrack();
+        //   break;
         default:
           break;
       }
     });
   }
+
+  // dynamically updates all of the login/signup forms, filters by name.
+  updateAuthForms(e) {
+    const value = e.target.value;
+    // console.log(e.target.name, value);
+    switch (e.target.name) {
+      case 'loginName':
+        this.setState({ loginName: value });
+        break;
+      case 'loginPass':
+        this.setState({ loginPass: value });
+        break;
+      case 'signupName':
+        this.setState({ signupName: value });
+        break;
+      // case 'signupEmail':
+      //   this.setState({ signupEmail: value});
+      //   break;
+      case 'signupPass':
+        this.setState({ signupPass: value });
+        break;
+      default:
+        break;
+    }
+  }
+
+  // passes the login data to the api
+  // authenticates data with server
+  // response with login and user ID
+  handleLogin() {
+    fetch('/auth/login', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        username: this.state.loginName,
+        password: this.state.loginPass,
+      }),
+    })
+    .then(r => r.json())
+    .then((response) => {
+      console.log('the response is:', response)
+      if (response.id !== 'invalid') {
+        this.setState({
+          userId: response.id,
+        });
+        // saves jwt token and ID
+        localStorage.id = response.id;
+        localStorage.token = response.token;
+      } else {
+        alert('invalid login');
+      }
+    })
+    .then(this.setState({
+      loginName: '',
+      loginPass: ''
+    }))
+    .then(console.log('logging in', localStorage.id))
+    .catch(err => console.log(err));
+  }
+  // sends the signup data to the api server
+  // encrypts new user data and saves in db
+  // authenticates the response and returns the user id
+  handleSignup() {
+    fetch('/auth/signup', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        username: this.state.signupName,
+        // email: this.state.signupEmail,
+        password: this.state.signupPass,
+      }),
+    })
+    .then(r => r.json())
+    .then((response) => {
+      console.log(response);
+      if (response.id) {
+        this.setState({
+          userId: response.id,
+        })
+        localStorage.id = response.id;
+      } else {
+        alert(response.message);
+      }
+    })
+    .then(this.setState({
+      signupName: '',
+      signupPass: '',
+      // signupEmail: '',
+    }))
+    .then(console.log('signup successful'))
+    .catch(err => console.log(err));
+  }
+  // handles logout of the user, will revert to login state
+  handleLogout() {
+    fetch('/auth/logout', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+      body: JSON.stringify({
+        id: this.state.userId,
+      }),
+    });
+    this.setState({ userId: 0 });
+    console.log('logging out');
+    localStorage.token = null;
+    localStorage.id = null;
+  }
+
+  // this authenticates the user on each page load
+  // uses a token from local storage to verify access
+  authenticateUser() {
+    let token;
+    if ((localStorage.getItem('token') === null)) {
+      token = 'invalid';
+    } else {
+       token = localStorage.getItem('token')
+    }
+    console.log(token)
+    fetch('/auth/verify', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        id: this.state.id,
+        token: token,
+      }),
+    })
+    .then(r => r.json())
+    .then((response) => {
+      if (response.name === 'JsonWebTokenError') {
+        this.setState({ userId: 0 });
+        localStorage.setItem('token', null);
+      } else {
+        this.setState({ userId: response.id });
+        localStorage.setItem('token', response.token)
+      }
+    })
+    .catch(err => console.log(err));
+  }
+
 
   // Web audio API cobbled together from various MDN articles
   // fetches the audio file from our api
@@ -245,9 +395,23 @@ export default class App extends Component {
 
   // saves the record to the db through our api
   saveRecord() {
-    // gets rid of the annoyingly large timestamp value
+    // first gets rid of the annoyingly large timestamp value
     const tapData = this.state.trackData;
     tapData[0][3] = 0;
+
+    const trackObj = {
+      name: this.state.recordedName,
+      data: tapData,
+      instruments: this.state.instruments,
+      userId: this.state.userId
+    }
+    // saves the track to the current track list
+    const currentTracks = this.state.savedTracks;
+    currentTracks.push(trackObj)
+    this.setState({
+      savedTracks: currentTracks
+    })
+
     // posts the data to the api
     fetch('/api/tracks', {
       headers: {
@@ -255,10 +419,10 @@ export default class App extends Component {
       },
       method: 'POST',
       body: JSON.stringify({
-        name: this.state.recordedName,
-        data: tapData,
-        instruments: this.state.instruments,
-        userId: this.state.userId,
+        name: trackObj.name,
+        data: trackObj.data,
+        instruments: trackObj.instruments,
+        userId: trackObj.userId,
       })
     })
     .then(r => r.json())
@@ -316,7 +480,8 @@ export default class App extends Component {
   }
 
   toggleSoundMenu(id) {
-    const toggled = this.state.toggleMenu;
+    console.log('toggling menu')
+    const toggled = this.state.toggleMenu[id];
     toggled[id] ? toggled[id] = false : toggled[id] = true;
     this.setState({
       toggleMenu: toggled,
@@ -326,7 +491,16 @@ export default class App extends Component {
   render() {
     return (
       <div className="flex-wrapper">
-        <Header />
+        <Header
+          updateAuthForms={e => this.updateAuthForms(e)}
+          handleSignup={this.handleSignup.bind(this)}
+          handleLogin={this.handleLogin.bind(this)}
+          loginName={this.state.loginName}
+          loginPass={this.state.loginPass}
+          signupName={this.state.signupName}
+          signupPass={this.state.signupPass}
+          handleLogout={this.handleLogout.bind(this)}
+        />
         <Sidebar />
         <TapBox />
         <TapList

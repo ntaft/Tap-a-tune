@@ -22,8 +22,7 @@ trackRouter.put('/:id', editTrack, (req, res) => {
 });
 
 trackRouter.post('/', saveTrack, (req, res) => {
-  // res.status(200);
-  res.json(res.body);
+  res.json('saved track to db');
 });
 
 module.exports = trackRouter;

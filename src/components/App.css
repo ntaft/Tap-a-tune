@@ -16,6 +16,7 @@
 
 .sidebar, .saved {
   background-color: darkblue;
+
 }
 /* We rely on source order for mobile-first approach
  * in this case:

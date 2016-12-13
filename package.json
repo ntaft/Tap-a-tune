@@ -33,7 +33,9 @@
     "express": "^4.14.0",
     "morgan": "^1.7.0",
     "node-fetch": "^1.6.3",
-    "pg-promise": "^5.3.5"
+    "pg-promise": "^5.3.5",
+    "bcryptjs": "^2.3.0",
+    "jsonwebtoken": "^7.1.9"
   },
   "devDependencies": {
     "babel": "^6.5.2",
