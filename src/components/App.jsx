@@ -15,7 +15,7 @@ export default class App extends Component {
 
     this.state = {
       // default user id (1 for testing)
-      userId: 0,
+      userId: 1,
       loginName: '',
       loginPass: '',
       signupName: '',
@@ -406,11 +406,11 @@ export default class App extends Component {
       userId: this.state.userId
     }
     // saves the track to the current track list
-    const currentTracks = this.state.savedTracks;
-    currentTracks.push(trackObj)
-    this.setState({
-      savedTracks: currentTracks
-    })
+    // const currentTracks = this.state.savedTracks;
+    // currentTracks.push(trackObj)
+    // this.setState({
+    //   savedTracks: currentTracks
+    // })
 
     // posts the data to the api
     fetch('/api/tracks', {
@@ -428,6 +428,7 @@ export default class App extends Component {
     .then(r => r.json())
     .then((response) => {
       console.log(response);
+      this.getSavedList();
     })
     .catch(err => console.log(err));
   }

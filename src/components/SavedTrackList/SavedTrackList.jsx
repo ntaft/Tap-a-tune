@@ -3,11 +3,12 @@ import SavedTrackItem from '../SavedTrackItem/SavedTrackItem';
 
 class SavedTrackList extends Component {
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.savedTracks !== this.props.savedTracks) {
-      this.renderSavedList();
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.savedTracks !== this.props.savedTracks) {
+  //     this.renderSavedList();
+  //   }
+  // }
+
   renderSavedList() {
     if (this.props.savedTracks.length > 0) {
       return this.props.savedTracks.map((track, i) =>
