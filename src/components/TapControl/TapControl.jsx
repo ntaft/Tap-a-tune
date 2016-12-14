@@ -52,6 +52,12 @@ const TapControl = props => (
     >
       Clear Dub Track
     </button>
+    <button
+      className="save-button"
+      onClick={props.mergeDub}
+    >
+      Merge Dub into Master
+    </button>
 
 
   </div>

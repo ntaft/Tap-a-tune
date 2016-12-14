@@ -34,7 +34,7 @@ export default class App extends Component {
       // audioData: [0, 0, 0, 0, 0],
       // variables for recording new tracks
       trackData: [],
-      overDubData: [],
+      dubData: [],
       isMainTrack: true,
       recordedName: '',
       savedTracks: [],
@@ -56,6 +56,7 @@ export default class App extends Component {
     this.toggleSoundMenu.bind(this);
     this.authenticateUser.bind(this);
     this.editTrack.bind(this);
+    this.mergeDub.bind(this);
   }
 
   componentWillMount() {
@@ -342,12 +343,12 @@ export default class App extends Component {
   }
 
   recordTapHandler(tapID) {
-    const offsetTime = new Date().getTime() - this.state.trackData[0][3];
     // sets the recorded array concatinated with the offset time and activated sound
     // format: [trackID, soundName, beatID, timeStamp]
-    // if it is the main track, record to that
-    // if the dub track, record to the 2nd track
+    // if it is the main track, record to that, otherwise to dub track
+    // I know this is not DRY, will clean up later
     if (this.state.isMainTrack) {
+      const offsetTime = new Date().getTime() - this.state.trackData[0][3];
       this.setState({
         trackData: this.state.trackData.concat([[
           0,
@@ -357,8 +358,9 @@ export default class App extends Component {
         ]]),
       });
     } else {
+      const offsetTime = new Date().getTime() - this.state.dubData[0][3];
       this.setState({
-        trackData: this.state.dubData.concat([[
+        dubData: this.state.dubData.concat([[
           0,
           this.state.instruments[tapID],
           tapID,
@@ -398,7 +400,7 @@ export default class App extends Component {
       // pops back on the initializer ontp the track
       mergedArr.unshift(trackInit);
       // saves the merged track to state, and resets dub track;
-      this.saveState({
+      this.setState({
         trackData: mergedArr,
         dubData: [],
         isMainTrack: true,
@@ -520,7 +522,10 @@ export default class App extends Component {
       // needs to convert back to an ordered nested array
       // expanded on a clever method posted here: https://stackoverflow.com/questions/6857468/converting-a-js-object-to-an-array
       const arrData = response.map(obj => Object.keys(obj).map(key => obj[key]));
-      this.setState({ trackData: arrData });
+      this.setState({
+        trackData: arrData,
+        isMainTrack: true,
+      });
     })
     .catch(err => console.log(err))
   }
@@ -612,9 +617,10 @@ export default class App extends Component {
           saveRecord={() => this.saveRecord()}
           updateTrackName={e => this.updateTrackName(e)}
           trackName={this.state.recordedName}
-          editTrack={() => this.state.editTrack()}
-          clearRecord={() => this.state.clearRecord('master')}
-          clearDub={() => this.state.clearRecord('dub')}
+          editTrack={() => this.editTrack()}
+          clearRecord={() => this.clearRecord('master')}
+          clearDub={() => this.clearRecord('dub')}
+          mergeDub={() => this.mergeDub().bind(this)}
         />
         <SavedTrackList
           // there is an issue with loadTrack auto-firing
