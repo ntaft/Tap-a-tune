@@ -52,9 +52,13 @@ export default class App extends Component {
     this.deleteTrack.bind(this);
     this.getAudioList.bind(this);
     this.toggleSoundMenu.bind(this);
+    this.authenticateUser.bind(this);
   }
 
   componentWillMount() {
+    // checks if the user has a current login session active, and if so auto-logins
+    this.authenticateUser()
+    // preload audio links
     this.getAudioList();
   }
   componentDidMount() {
@@ -403,13 +407,14 @@ export default class App extends Component {
       userId: this.state.userId
     }
     // saves the track to the current track list
+    // need to convert the data to proper format
     // const currentTracks = this.state.savedTracks;
     // currentTracks.push(trackObj)
     // this.setState({
     //   savedTracks: currentTracks
     // })
 
-    // posts the data to the api
+    // posts the track data to the api
     fetch('/api/tracks', {
       headers: {
         'Content-Type': 'application/json',
@@ -441,9 +446,8 @@ export default class App extends Component {
     .then(r => r.json())
     .then((response) => {
       // needs to convert back to an ordered nested array
-      // adapted from a clever method posted here: https://stackoverflow.com/questions/6857468/converting-a-js-object-to-an-array
-      const arrData = response.map(obj =>
-      Object.keys(obj).map(key => obj[key]));
+      // expanded on a clever method posted here: https://stackoverflow.com/questions/6857468/converting-a-js-object-to-an-array
+      const arrData = response.map(obj => Object.keys(obj).map(key => obj[key]));
       this.setState({ trackData: arrData });
     })
     .catch(err => console.log(err))
@@ -476,7 +480,8 @@ export default class App extends Component {
       instruments: newInst,
     })
   }
-
+  // when the user clicks the menu indicator, toggles the instrument menu show
+  // and detoggles all other menus
   toggleSoundMenu(id) {
     let toggled = this.state.toggleMenu;
     if (toggled[id]) {
@@ -490,7 +495,7 @@ export default class App extends Component {
       toggleMenu: toggled,
     });
   }
-
+  // simply triggers a given sound when the 'fingerpad' is clicked/pressed
   triggerSound(id) {
     this.getAudio(id);
   }
