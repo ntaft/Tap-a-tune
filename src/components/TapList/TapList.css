@@ -1,6 +1,6 @@
 .tap-zone {
   height: 150px;
-  width: 150px;
+  width: 110px;
   /*background-image: url("https://res.com/sites/default/files/block_icon_fingerprint_red.png");*/
   position: relative;
   z-index: 10;
@@ -8,31 +8,12 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  border-radius: 50%;
+  border-radius: 40%;
   background-color: 'gray';
   float: left;
 }
 
 
-.tap-zone {
-  background-image: url("http://i.imgur.com/9D5UU99.png");
-}
-
-.tap-zone [key=1] {
-  background-image: url("http://i.imgur.com/USjeDxe.png");
-}
-
-.tap-zone[key='2'] {
-  background-image: url("http://i.imgur.com/oiXKjQY.png");
-}
-
-.tap-zone[key='3'] {
-  background-image: url("http://i.imgur.com/w3rpGob.png");
-}
-
-.tap-zone[key='4'] {
-  background-image: url("http://i.imgur.com/DmmUoN1.png");
-}
 /*https://3.bp.blogspot.com/-ETMBQJ_ZSi4/WDD2XcUlGOI/AAAAAAAAAQI/h6qWxDSh8jUtIabADzm-5Q4nhYp_5w8QgCLcB/s1600/Fingerprint.png*/
 /*Fingerprints by Ema Dimitrova from the Noun Project*/
 .hidden {

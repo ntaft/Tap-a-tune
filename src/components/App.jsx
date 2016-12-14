@@ -34,6 +34,8 @@ export default class App extends Component {
       // audioData: [0, 0, 0, 0, 0],
       // variables for recording new tracks
       trackData: [],
+      overDubData: [],
+      isMainTrack: true,
       recordedName: '',
       savedTracks: [],
       recording: false,
@@ -53,6 +55,7 @@ export default class App extends Component {
     this.getAudioList.bind(this);
     this.toggleSoundMenu.bind(this);
     this.authenticateUser.bind(this);
+    this.editTrack.bind(this);
   }
 
   componentWillMount() {
@@ -218,10 +221,10 @@ export default class App extends Component {
   // uses a token from local storage to verify access
   authenticateUser() {
     let token;
-    if ((localStorage.getItem('token') === null)) {
+    if (!(localStorage.getItem('token'))) {
       token = 'invalid';
     } else {
-       token = localStorage.getItem('token')
+      token = localStorage.getItem('token')
     }
     console.log(token)
     fetch('/auth/verify', {
@@ -230,7 +233,7 @@ export default class App extends Component {
       },
       method: 'POST',
       body: JSON.stringify({
-        id: this.state.id,
+        // id: this.state.userId,
         token: token,
       }),
     })
@@ -324,36 +327,90 @@ export default class App extends Component {
     const startTime = new Date().getTime();
     // first element of the nested array is initialized with timestamp
       // format: [trackID, soundName, beatID, timeStamp]
-    this.setState({
-      trackData: [[0, 'initializing', -1, startTime]],
-      recording: true,
-    });
+    // switches between the two tracks
+    if (this.state.isMainTrack) {
+      this.setState({
+        trackData: [[0, 'initializing', -1, startTime]],
+        recording: true,
+      });
+    } else {
+      this.setState({
+        dubData: [[0, 'initializing', -1, startTime]],
+        recording: true,
+      });
+    }
+
   }
 
   recordTapHandler(tapID) {
     const offsetTime = new Date().getTime() - this.state.trackData[0][3];
     // sets the recorded array concatinated with the offset time and activated sound
     // format: [trackID, soundName, beatID, timeStamp]
-    this.setState({
-      trackData: this.state.trackData.concat([[
-        0,
-        this.state.instruments[tapID],
-        tapID,
-        offsetTime
-      ]]),
-    });
+    // if it is the main track, record to that
+    // if the dub track, record to the 2nd track
+    if (this.state.isMainTrack) {
+      this.setState({
+        trackData: this.state.trackData.concat([[
+          0,
+          this.state.instruments[tapID],
+          tapID,
+          offsetTime
+        ]]),
+      });
+    } else {
+      this.setState({
+        trackData: this.state.dubData.concat([[
+          0,
+          this.state.instruments[tapID],
+          tapID,
+          offsetTime
+        ]]),
+      });
+    }
   }
-
+  // stop the recording loop
   stopRecord() {
     this.setState({ recording: false });
     console.log('stopped recording')
   }
 
+  // merge the main track with the dub track
+  mergeDub() {
+  // sets a new track with the initializer
+    const newDub = this.state.dubData;
+    const prevTrack = this.state.trackData;
+    const trackInit = prevTrack.shift();
+    newDub.shift();
+
+    // sorts the array by its timer position
+    const mergedArr = prevTrack.concat(newDub);
+    mergedArr.sort((a, b) => {
+      if (a[3] > b[3]) {
+        return 1;
+      }
+      if (a[3] < b[3]) {
+        return -1;
+      }
+      // if the time is equal
+      return 0;
+    });
+    // pops back on the initializer ontp the track
+    mergedArr.unshift(trackInit);
+    // saves the merged track to state, and resets dub track;
+    this.saveState({
+      trackData: mergedArr,
+      dubData: [],
+    });
+    console.log(mergedArr);
+  }
+
+  // resets all recordings
   clearRecord() {
     console.log('clearing recording')
     this.setState({
       recording: false,
       trackData: [],
+      dubData: [],
     });
   }
 
@@ -396,8 +453,9 @@ export default class App extends Component {
 
   // saves the record to the db through our api
   saveRecord() {
+    // makes sure you are selecting the right track
+    const tapData = this.state.isMainTrack ? this.state.trackData : this.state.dubData
     // first gets rid of the annoyingly large timestamp value
-    const tapData = this.state.trackData;
     tapData[0][3] = 0;
 
     const trackObj = {
@@ -500,6 +558,13 @@ export default class App extends Component {
     this.getAudio(id);
   }
 
+  // allows you to 'overdub' the current loaded track and allow you to layer beats
+  editTrack() {
+    if (this.state.trackData) {
+
+    }
+  }
+
   render() {
     return (
       <div className="flex-wrapper">
@@ -530,6 +595,7 @@ export default class App extends Component {
           saveRecord={() => this.saveRecord()}
           updateTrackName={e => this.updateTrackName(e)}
           trackName={this.state.recordedName}
+          editTrack={() => this.state.editTrack()}
         />
         <SavedTrackList
           // there is an issue with loadTrack auto-firing

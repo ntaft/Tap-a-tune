@@ -34,6 +34,13 @@ const TapControl = props => (
       placeholder="My New Track"
       onChange={props.updateTrackName}
     />
+    <button
+      className="save-button"
+      onClick={props.editTrack}
+    >
+      Overdub Track
+    </button>
+
   </div>
 );
 
