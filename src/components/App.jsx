@@ -339,7 +339,6 @@ export default class App extends Component {
         recording: true,
       });
     }
-
   }
 
   recordTapHandler(tapID) {
@@ -376,42 +375,57 @@ export default class App extends Component {
 
   // merge the main track with the dub track
   mergeDub() {
-  // sets a new track with the initializer
-    const newDub = this.state.dubData;
-    const prevTrack = this.state.trackData;
-    const trackInit = prevTrack.shift();
-    newDub.shift();
+    // checks to see if both the track and dub are in state
+    if (this.state.trackData && this.state.dubData) {
+      // sets a new track with the initializer
+      const newDub = this.state.dubData;
+      const prevTrack = this.state.trackData;
+      const trackInit = prevTrack.shift();
+      newDub.shift();
 
-    // sorts the array by its timer position
-    const mergedArr = prevTrack.concat(newDub);
-    mergedArr.sort((a, b) => {
-      if (a[3] > b[3]) {
-        return 1;
-      }
-      if (a[3] < b[3]) {
-        return -1;
-      }
-      // if the time is equal
-      return 0;
-    });
-    // pops back on the initializer ontp the track
-    mergedArr.unshift(trackInit);
-    // saves the merged track to state, and resets dub track;
-    this.saveState({
-      trackData: mergedArr,
-      dubData: [],
-    });
-    console.log(mergedArr);
+      // sorts the array by its timer position
+      const mergedArr = prevTrack.concat(newDub);
+      mergedArr.sort((a, b) => {
+        if (a[3] > b[3]) {
+          return 1;
+        }
+        if (a[3] < b[3]) {
+          return -1;
+        }
+        // if the time is equal
+        return 0;
+      });
+      // pops back on the initializer ontp the track
+      mergedArr.unshift(trackInit);
+      // saves the merged track to state, and resets dub track;
+      this.saveState({
+        trackData: mergedArr,
+        dubData: [],
+        isMainTrack: true,
+      });
+      console.log(mergedArr);
+
+    } else {
+      window.alert('you need to have both a main and dub track loaded to merge');
+    }
   }
 
   // resets all recordings
-  clearRecord() {
-    console.log('clearing recording')
-    this.setState({
-      recording: false,
-      trackData: [],
-      dubData: [],
-    });
+  clearRecord(track) {
+    console.log('clearing recording', track)
+    if (track === 'master') {
+      this.setState({
+        recording: false,
+        trackData: [],
+        dubData: [],
+        isMainTrack: true,
+      });
+    } else {
+      this.setState({
+        recording: false,
+        dubData: [],
+      });
+    }
   }
 
   // starts playing the recorded track
@@ -454,7 +468,7 @@ export default class App extends Component {
   // saves the record to the db through our api
   saveRecord() {
     // makes sure you are selecting the right track
-    const tapData = this.state.isMainTrack ? this.state.trackData : this.state.dubData
+    const tapData = this.state.trackData;
     // first gets rid of the annoyingly large timestamp value
     tapData[0][3] = 0;
 
@@ -561,7 +575,10 @@ export default class App extends Component {
   // allows you to 'overdub' the current loaded track and allow you to layer beats
   editTrack() {
     if (this.state.trackData) {
-
+      this.setState({
+        isMainTrack: false,
+      });
+    console.log('switching to dub track');
     }
   }
 
@@ -596,6 +613,8 @@ export default class App extends Component {
           updateTrackName={e => this.updateTrackName(e)}
           trackName={this.state.recordedName}
           editTrack={() => this.state.editTrack()}
+          clearRecord={() => this.state.clearRecord('master')}
+          clearDub={() => this.state.clearRecord('dub')}
         />
         <SavedTrackList
           // there is an issue with loadTrack auto-firing

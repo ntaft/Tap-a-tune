@@ -40,6 +40,19 @@ const TapControl = props => (
     >
       Overdub Track
     </button>
+    <button
+      className="save-button"
+      onClick={props.clearRecord}
+    >
+      Clear all tracks
+    </button>
+    <button
+      className="save-button"
+      onClick={props.clearDub}
+    >
+      Clear Dub Track
+    </button>
+
 
   </div>
 );
