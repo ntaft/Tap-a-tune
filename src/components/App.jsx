@@ -14,7 +14,7 @@ export default class App extends Component {
     super();
 
     this.state = {
-      // default user id (1 for testing)
+      // default user id (1 for testing, 0 for logout)
       userId: 1,
       loginName: '',
       loginPass: '',

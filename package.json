@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "tap a beat and save it in the cloud",
   "main": "server.js",
+  "engines": {
+    "node": "6.6.0"
+  },
+  "private": "true",
   "scripts": {
     "clean": "rm -rf dist && rm -rf node_modules",
     "heroku-prebuild": "bash ./scripts/deployment_react.sh",
