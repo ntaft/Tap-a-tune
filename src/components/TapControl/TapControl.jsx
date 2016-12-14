@@ -35,25 +35,21 @@ const TapControl = props => (
       onChange={props.updateTrackName}
     />
     <button
-      className="save-button"
       onClick={props.editTrack}
     >
       Overdub Track
     </button>
     <button
-      className="save-button"
       onClick={props.clearRecord}
     >
       Clear all tracks
     </button>
     <button
-      className="save-button"
       onClick={props.clearDub}
     >
       Clear Dub Track
     </button>
     <button
-      className="save-button"
       onClick={props.mergeDub}
     >
       Merge Dub into Master

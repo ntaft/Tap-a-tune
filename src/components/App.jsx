@@ -30,8 +30,6 @@ export default class App extends Component {
         'crash-acoustic'
       ],
       audioList: [],
-      // buffer for audio data (may be unnecessary)
-      // audioData: [0, 0, 0, 0, 0],
       // variables for recording new tracks
       trackData: [],
       dubData: [],
@@ -61,7 +59,7 @@ export default class App extends Component {
 
   componentWillMount() {
     // checks if the user has a current login session active, and if so auto-logins
-    this.authenticateUser()
+    // this.authenticateUser()
     // preload audio links
     this.getAudioList();
   }
