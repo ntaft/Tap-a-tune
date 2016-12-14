@@ -1,4 +1,4 @@
-const db = require('../db/dbConfig');
+const db = require('../lib/dbConfig');
 
 function showUserTracks(req, res, next) {
   db.any(`SELECT * FROM tracks

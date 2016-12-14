@@ -1,4 +1,4 @@
-const db = require('../db/dbConfig');
+const db = require('../lib/dbConfig');
 
 // gets a list of all avaliable sound files and relational paths
 // note that files are stored locally, NOT in the db

@@ -1,7 +1,7 @@
 // adapted from user management code attributed to Rafa @ GA. Thanks!
 // originally using mongo, modified for Postgres
 
-const db = require('../db/dbConfig');
+const db = require('../lib/dbConfig');
 const bcrypt = require ('bcryptjs');
 const { createToken } = require('../lib/token');
 
