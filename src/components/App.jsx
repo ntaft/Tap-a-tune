@@ -596,6 +596,7 @@ export default class App extends Component {
             signupName={this.state.signupName}
             signupPass={this.state.signupPass}
             handleLogout={this.handleLogout.bind(this)}
+            userId={this.state.userId}
           />
         </div>
         <div className="content-wrapper">

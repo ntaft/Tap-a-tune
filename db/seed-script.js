@@ -1,11 +1,10 @@
 
+let fileNames = 'Ab5.mp3*Bb1.mp3*C6.mp3*Db3.mp3Gb3.mpAb6.mp3*Bb2.mp3*C7.mp3*Db4.mp3*Eb1.mp3Gb4.mpAb7.mp3*Bb3.mp3*C8.mp3*Db5.mp3*Eb2.mp3Gb5.mpBb4.mp3*D1.mp3*Db6.mp3*Eb3.mp3Gb6.mpBb5.mp3*D2.mp3*Db7.mp3*Eb4.mp3*G2.mp3*Gb7.mp3Bb6.mp3*D3.mp3*Db8.mp3*Eb5.mp3*G3.mpBb7.mp3*D4.mpEb6.mp3*G4.mp3D5.mpEb7.mp3*G5.mp3*Ab1.mp3D6.mpG6.mp3*Ab2.mp3D7.mpG7.mp3*Ab3.mp3Ab4.mp3*Bb0.mp3Db2.mpGb2.mp3*'
+// let fileNames = 'clap-808.wav*kick-tron.wav*shaker-suckup.wav*clap-analog.wav*kick-zapper.wav*snare-808.wav*cowbell-808.wav*openhat-808.wav*snare-analog.wav*crash-808.wav*openhat-analog.wav*snare-big.wav*crash-acoustic.wav*openhat-slick.wav*snare-electro.wav*hihat-808.wav*perc-808.wav*snare-sumo.wav*hihat-digital.wav* perc-laser.wav*tom-808.wav*hihat-electro.wav*perc-tambo.wav*tom-analog.wav*hihat-plain.wav*perc-tribal.wav*tom-lofi.wav*kick-808.wav*shaker-analog.wav*tom-rototom.wav*kick-classic.wav*shaker-shuffle.wav*'
+const filePath = 'https://s3.amazonaws.com/tappity/';
+const category = 'piano';
 
-let fileNames = `clap-808.wav, clap-analog.wav, clap-crushed.wav, clap-fat.wav, clap-slapper.wav, clap-tape.wav, cowbell-808.wav, crash-808.wav, crash-acoustic.wav, crash-noise.wav, crash-tape.wav, hihat-808.wav, hihat-acoustic01.wav, hihat-acoustic02.wav, hihat-analog.wav, hihat-digital.wav, hihat-dist01.wav, hihat-dist02.wav, hihat-electro.wav, hihat-plain.wav, hihat-reso.wav, hihat-ring.wav, kick-808.wav, kick-acoustic01.wav, kick-acoustic02.wav, kick-big.wav, kick-classic.wav, kick-cultivator.wav, kick-deep.wav, kick-dry.wav, kick-electro01.wav, kick-electro02.wav, kick-floppy.wav, kick-gritty.wav, kick-heavy.wav, kick-newwave.wav, kick-oldschool.wav, kick-plain.wav, kick-slapback.wav, kick-softy.wav, kick-stomp.wav, kick-tape.wav, kick-thump.wav, kick-tight.wav, kick-tron.wav, kick-vinyl01.wav, kick-vinyl02.wav, kick-zapper.wav, openhat-808.wav, openhat-acoustic01.wav, openhat-analog.wav, openhat-slick.wav, openhat-tight.wav, perc-808.wav, perc-chirpy.wav, perc-hollow.wav, perc-laser.wav, perc-metal.wav, perc-nasty.wav, perc-short.wav, perc-tambo.wav, perc-tribal.wav, perc-weirdo.wav, ride-acoustic01.wav, ride-acoustic02.wav, shaker-analog.wav, shaker-shuffle.wav, shaker-suckup.wav, snare-808.wav, snare-acoustic01.wav, snare-acoustic02.wav, snare-analog.wav, snare-big.wav, snare-block.wav, snare-brute.wav, snare-dist01.wav, snare-dist02.wav, snare-dist03.wav, snare-electro.wav, snare-lofi01.wav, snare-lofi02.wav, snare-modular.wav, snare-noise.wav, snare-pinch.wav, snare-punch.wav, snare-smasher.wav, snare-sumo.wav, snare-tape.wav, snare-vinyl01.wav, snare-vinyl02.wav, tom-808.wav, tom-acoustic01.wav, tom-acoustic02.wav, tom-analog.wav, tom-chiptune.wav, tom-fm.wav, tom-lofi.wav, tom-rototom.wav, tom-short.wav,`
-
-const filePath = '/Users/ntaft/code/wdi/projects/project4/Tappity/sounds';
-const category = 'perc';
-
-fileNames = fileNames.split(', ');
+fileNames = fileNames.split('*');
 const output = fileNames.map((fileName) => {
   const name = fileName.slice(0, -4);
   return `INSERT INTO sounds (name, file_name, file_path, category) VALUES('${name}', '${fileName}', '${filePath}', '${category}'); `

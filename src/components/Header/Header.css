@@ -1,5 +1,17 @@
 .logo {
-  height: 75px;
-  width: 75px;
+  height: 60px;
+  width: 60px;
   display: block;
 }
+
+.logo-box {
+
+}
+
+.hide {
+  visibility: hidden;
+}
+
+ .login-container, .logout-button {
+   float: right;
+ }

@@ -10,7 +10,7 @@ class TapList extends Component {
       <div
         key={i}
         className="tap-zone"
-        style={{ backgroundColor: '#e05915', backgroundImage: fingerprints[i], opacity: '0.75' }}
+        style={{ backgroundColor: '#e05915', backgroundImage: fingerprints[i], opacity: '1' }}
         onClick={() => this.props.triggerSound(i)}
       >
         <button

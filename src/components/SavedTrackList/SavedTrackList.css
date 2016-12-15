@@ -1,4 +1,9 @@
 .saved {
   overflow: scroll;
-  height: 500px;
+  height: 100%;
+  position: relative;
+}
+
+.saved-item {
+  border-bottom: 2px solid black;
 }
