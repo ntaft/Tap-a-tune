@@ -1,51 +1,94 @@
 
  /*Flexbox layout adapted from https://css-tricks.com/snippets/css/a-guide-to-flexbox/*/
-.flex-wrapper {
+body, html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: 'Lato', arial;
+}
+
+.main-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+
+.main-content {
+background-color: #e1e8f0;
+position: relative;
+bottom: 0;
+}
+
+.content-wrapper {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  bottom: 0;
 }
 
-/* We tell all items to be 100% width */
-.header, .main, .sidebar, .saved .footer {
-  flex: 1 100%;
+.header-content, .header{
+  background-color: #bccbde;
+  width: 100%;
+  height: 75px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.header, .footer {
-  background-color: green;
+.footer-content {
+  background-color: #bccbde;
+  width: 100%;
+  height: 20px;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+
 }
 
-.sidebar, .saved {
-  background-color: darkblue;
+.aside-content{
+  background-color: #c2dde6;
+  width: 300px;
+  position: relative;
+  right: 0;
+  margin: 0;
+  bottom: 0;
 
 }
-/* We rely on source order for mobile-first approach
- * in this case:
- * 1. header
- * 2. nav
- * 3. main
- * 4. aside
- * 5. footer
- */
 
-/* Medium screens */
-@media all and (min-width: 600px) {
-  /* We tell both sidebars to share a row */
-  .saved, .sidebar { flex: 1 auto; }
-}
+.saved-content {
+  background-color: #c2dde6;
+  width: 300px;
+  position: relative;
+  left: 0;
+  margin: 0;
+  bottom: 0;
 
-/* Large screens */
-@media all and (min-width: 800px) {
-  /* We invert order of first sidebar and main
-   * And tell the main element to take twice as much width as the other two sidebars
-   */
-  .main { flex: 2 0px; }
-
-  .saved { order: 1; }
-  .main    { order: 2; }
-  .sidebar { order: 3; }
-  .footer  { order: 4; }
 }
 
 button {
   border-style: none;
+  color: #e1e8f0;
+  padding: 5px;
+  margin: 5px;
+  background-color: #431c5d;
+}
+
+h1 {
+  font-family: 'Chewy', arial;
+}
+
+
+
+@font-face {
+  font-family: 'Chewy';
+  src: url('./fonts/Chewy.otf');
+  src: local('Chewy')
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('./fonts/Lato-Regular.otf');
+  src: local('Lato')
 }

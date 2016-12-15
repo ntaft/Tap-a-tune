@@ -10,14 +10,14 @@ class TapList extends Component {
       <div
         key={i}
         className="tap-zone"
-        style={{ backgroundColor: 'rgb(200, 200, 200)', backgroundImage: fingerprints[i] }}
+        style={{ backgroundColor: '#e05915', backgroundImage: fingerprints[i], opacity: '0.75' }}
         onClick={() => this.props.triggerSound(i)}
-        >
+      >
         <button
-          style={{backgroundColor: 'transparent'}}
+          style={{backgroundColor: '#cdd422'}}
           className="drop-sounds"
           onClick={() => this.props.toggleSoundMenu(i)}
-        ></button>
+        />
         <div className={this.props.toggleMenu[i] ? "sound-menu drop" : "sound-menu hidden"} >
           <TapItem
             key={i}
@@ -29,7 +29,8 @@ class TapList extends Component {
           />
         </div>
       </div>
-    );
+
+        );
   }
 
   render() {

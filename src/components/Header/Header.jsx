@@ -8,7 +8,9 @@ const Header = props => (
     src="http://freevector.co/wp-content/uploads/2013/05/56093-triple-tap-of-three-fingers-of-a-hand-outlined-gesture-symbol-200x200.png"
     className="logo"
   />
-    <span>Tappity</span>
+    <h1>Tappity</h1>
+    <div className="login-container">
+    <div className="signup-box">
     <button className="login-buttons">dummy-drop</button>
     <input
       type="text"
@@ -24,6 +26,8 @@ const Header = props => (
       placeholder="Password"
       onChange={props.updateAuthForms}
     />
+  </div>
+  <div className="login-box">
     <button
       id="signup-button"
       onClick={props.handleSignup}
@@ -51,7 +55,14 @@ const Header = props => (
     >
       Log in!
     </button>
+    <button
+      id="login-button"
+      onClick={props.handleLogout}
+    >Log Out
+    </button>
   </div>
+  </div>
+  <
 );
 
 export default Header;

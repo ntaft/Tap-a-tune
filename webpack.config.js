@@ -64,6 +64,10 @@ module.exports = {
         loader: 'file-loader?name=/img/[name].[hash:base64:5].[ext]'
       },
       {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader?limit=100&mimetype=application/octet-stream&name=/fonts/[name].[ext]',
+      },
+      {
         test: /\.(js|jsx)$/,
         loader: 'babel'
       },

@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
-import TapBox from './TapBox/TapBox';
 import TapControl from './TapControl/TapControl';
 import TapList from './TapList/TapList';
 import SavedTrackList from './SavedTrackList/SavedTrackList';
-import Sidebar from './Sidebar/Sidebar';
 import './App.css';
 
 export default class App extends Component {
@@ -71,19 +69,19 @@ export default class App extends Component {
       console.log(e.key);
 
       switch (e.key) {
-        case 'w':
+        case 'f':
           this.getAudio(0);
           break;
         case 'a':
           this.getAudio(1);
           break;
-        case 's':
+        case 'w':
           this.getAudio(2);
           break;
-        case 'd':
+        case 'g':
           this.getAudio(3);
           break;
-        case 'f':
+        case 'd':
           this.getAudio(4);
           break;
         // case 'r':
@@ -587,47 +585,57 @@ export default class App extends Component {
 
   render() {
     return (
-      <div className="flex-wrapper">
-        <Header
-          updateAuthForms={e => this.updateAuthForms(e)}
-          handleSignup={this.handleSignup.bind(this)}
-          handleLogin={this.handleLogin.bind(this)}
-          loginName={this.state.loginName}
-          loginPass={this.state.loginPass}
-          signupName={this.state.signupName}
-          signupPass={this.state.signupPass}
-          handleLogout={this.handleLogout.bind(this)}
-        />
-        <Sidebar />
-        <TapBox />
-        <TapList
-          audioList={this.state.audioList}
-          selectInstrument={this.selectInstrument.bind(this)}
-          instruments={this.state.instruments}
-          toggleMenu={this.state.toggleMenu}
-          toggleSoundMenu={this.toggleSoundMenu.bind(this)}
-          triggerSound={this.triggerSound.bind(this)}
-        />
-        <TapControl
-          startRecord={() => this.startRecord()}
-          stopRecord={() => this.stopRecord()}
-          playTrack={() => this.playTrack()}
-          saveRecord={() => this.saveRecord()}
-          updateTrackName={e => this.updateTrackName(e)}
-          trackName={this.state.recordedName}
-          editTrack={() => this.editTrack()}
-          clearRecord={() => this.clearRecord('master')}
-          clearDub={() => this.clearRecord('dub')}
-          mergeDub={() => this.mergeDub().bind(this)}
-        />
-        <SavedTrackList
-          // there is an issue with loadTrack auto-firing
-          loadTrack={this.loadTrack.bind(this)}
-          deleteTrack={this.deleteTrack.bind(this)}
-          savedTracks={this.state.savedTracks}
-        />
+      <div className="main-wrapper">
+        <div className="header-content">
+          <Header
+            updateAuthForms={e => this.updateAuthForms(e)}
+            handleSignup={this.handleSignup.bind(this)}
+            handleLogin={this.handleLogin.bind(this)}
+            loginName={this.state.loginName}
+            loginPass={this.state.loginPass}
+            signupName={this.state.signupName}
+            signupPass={this.state.signupPass}
+            handleLogout={this.handleLogout.bind(this)}
+          />
+        </div>
+        <div className="content-wrapper">
+          <div className="saved-content">
+            <SavedTrackList
+              // there is an issue with loadTrack auto-firing
+              loadTrack={this.loadTrack.bind(this)}
+              deleteTrack={this.deleteTrack.bind(this)}
+              savedTracks={this.state.savedTracks}
+            />
+          </div>
+          <div className="main-content">
+            <TapList
+            audioList={this.state.audioList}
+            selectInstrument={this.selectInstrument.bind(this)}
+            instruments={this.state.instruments}
+            toggleMenu={this.state.toggleMenu}
+            toggleSoundMenu={this.toggleSoundMenu.bind(this)}
+            triggerSound={this.triggerSound.bind(this)}
+            />
+          </div>
+          <div className="aside-content">
+            <TapControl
+              startRecord={() => this.startRecord()}
+              stopRecord={() => this.stopRecord()}
+              playTrack={() => this.playTrack()}
+              saveRecord={() => this.saveRecord()}
+              updateTrackName={e => this.updateTrackName(e)}
+              trackName={this.state.recordedName}
+              editTrack={() => this.editTrack()}
+              clearRecord={() => this.clearRecord('master')}
+              clearDub={() => this.clearRecord('dub')}
+              mergeDub={() => this.mergeDub().bind(this)}
+            />
+          </div>
+        </div>
 
-        <Footer />
+        <div className="footer-content">
+          <Footer />
+        </div>
       </div>
     );
   }
