@@ -9,7 +9,7 @@ const { getSoundList } = require('../models/files');
 
 fileRouter.get('/:filename', (req, res) => {
   console.log(req.params.filename);
-  res.sendFile(`https://s3.amazonaws.com/tappity/${req.params.filename}.wav`);
+  res.redirect(`https://s3.amazonaws.com/tappity/${req.params.filename}.wav`);
 });
 
 // lists all avaliable files stored locally (or even remotely)
