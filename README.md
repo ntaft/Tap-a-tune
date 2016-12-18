@@ -2,22 +2,43 @@
 
 User Story:
 
-If you ever find yourself tapping your fingers to an imaginary beat? This is the chance to turn that music into reality. Using a  glove with conductive fingertips, tap on any conductive surface (such as a metal table, your arm, even a houseplant) and using a makey-makey as an interface, record that beat using a portable Raspberry Pi running an express server. Automatically upload your musical creation to the cloud,  and save it on your personal Tappity web page. Alter the sounds produced using a musical interface drawn from the MIDI / Web Audio api [and potentially share with friends and/or download a compatible MIDI file for future capabilities].
+Do you ever find yourself tapping your fingers to an imaginary beat? Turn that music into reality! Using a glove with conductive fingertips, tap on any conductive surface (such as a metal table, your arm, even a houseplant) and using a makey-makey as an interface, record the beat and upload your musical creation to the cloud on the Tappity app. Alter the sounds produced utilizing the Web Audio API.
+
+Up on Heroku: http://tappitytap.herokuapp.com/
 
 Technologies used:
 * makey-makey interface: https://learn.sparkfun.com/tutorials/makey-makey-quickstart-guide
-* Rasberry Pi running Debian https://www.raspberrypi.org/products/raspberry-pi-2-model-b/
-* Javascript
+* javascript
 * node
 * express
-* potentially midi-writer js or similar https://www.npmjs.com/package/midi-writer-js
-* Web Audio API and/or MIDI API
-* React
+* web audio api
+* react
 * CSS
-* Postgres
-* [bcrypt] - if time
-* [jwt] - if time
+* postgres
+* bcrypt
+* json web token
 
-![rough sketch of the concept](figures/diagram.jpg)
+Requirements:
+- makey-makey, arduino or similar interface that can produce key presses on user input - in particular a, w, d, f, g is ideal for the full experience. 
 
 ![Initial Wireframe of app, full screen](figures/wireframe.png)
+
+Acnowledgements:
+@gittheking and @jasonseminara for webpack config
+@rapala61 for auth reference
+http://www.codrops.com for piano audio samples
+http://www.99sounds.org for drum audio samples
+Fingerprint images by Ema Dimitrova from the Noun Project
+flaticon.com for icon logo
+method for converting object into array https://stackoverflow.com/questions/6857468/converting-a-js-object-to-an-array
+
+Known Issues:
+- problems with CSS rendering in React
+- UX issues
+- not mobile friendly
+- merge feature occasionally has binding issues
+
+Future Additions:
+- cleaner CSS and improved UX
+- integration of a raspberry pi server for remote usage
+- improved glove design, bypassing need for makey-makey
