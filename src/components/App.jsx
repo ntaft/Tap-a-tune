@@ -629,7 +629,7 @@ export default class App extends Component {
               editTrack={() => this.editTrack()}
               clearRecord={() => this.clearRecord('master')}
               clearDub={() => this.clearRecord('dub')}
-              mergeDub={() => this.mergeDub().bind(this)}
+              mergeDub={() => this.mergeDub()}
             />
           </div>
         </div>
