@@ -4,8 +4,6 @@ dist/
 
 .env
 
-audio/
-
 sounds/
 
 img/

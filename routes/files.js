@@ -7,6 +7,7 @@ const { getSoundList } = require('../models/files');
 //   res.send('send a file selected by name/id')
 // });
 
+// fetching from AWS with CORS
 fileRouter.get('/:filename', (req, res) => {
   console.log(req.params.filename);
   res.redirect(`https://s3.amazonaws.com/tappity/${req.params.filename}.wav`);
