@@ -4,6 +4,8 @@ User Story:
 
 Do you ever find yourself tapping your fingers to an imaginary beat? Turn that music into reality! Using a glove with conductive fingertips, tap on any conductive surface (such as a metal table, your arm, even a houseplant) and using a makey-makey as an interface, record the beat and upload your musical creation to the cloud on the Tappity app. Alter the sounds produced utilizing the Web Audio API.
 
+Up on Heroku: http://tappitytap.herokuapp.com/
+
 Technologies used:
 * makey-makey interface: https://learn.sparkfun.com/tutorials/makey-makey-quickstart-guide
 * javascript
