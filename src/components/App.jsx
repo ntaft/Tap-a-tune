@@ -13,7 +13,7 @@ export default class App extends Component {
 
     this.state = {
       // default user id (1 for testing, 0 for logout)
-      userId: 1,
+      userId: 0,
       loginName: '',
       loginPass: '',
       signupName: '',
