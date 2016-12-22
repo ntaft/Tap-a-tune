@@ -72,6 +72,14 @@ button {
   background-color: #431c5d;
 }
 
+button:active {
+  background-color: #11002B;
+}
+
+button:hover {
+  background-color: #774F91;
+}
+
 h1 {
   font-family: 'Chewy', arial;
 }

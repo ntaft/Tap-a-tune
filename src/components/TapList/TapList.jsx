@@ -10,7 +10,9 @@ class TapList extends Component {
       <div
         key={i}
         className="tap-zone"
-        style={{ backgroundColor: '#e05915', backgroundImage: fingerprints[i], opacity: '1' }}
+        style={{ backgroundColor: (this.props.padTriggered[i] ? '#cdd422' : '#8B370D'),
+          backgroundImage: fingerprints[i]
+        }}
         onClick={() => this.props.triggerSound(i)}
       >
         <button
@@ -21,7 +23,6 @@ class TapList extends Component {
         <div className={this.props.toggleMenu[i] ? "sound-menu drop" : "sound-menu hidden"} >
           <TapItem
             key={i}
-            id={i}
             className="tap-item"
             instrument={this.instrument}
             selectInstrument={this.props.selectInstrument}

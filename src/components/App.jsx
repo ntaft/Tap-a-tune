@@ -36,6 +36,7 @@ export default class App extends Component {
       savedTracks: [],
       recording: false,
       toggleMenu: [false, false, false, false, false],
+      padTriggered: [false, false, false, false, false]
     };
 
     // binding functions as necessary
@@ -70,19 +71,19 @@ export default class App extends Component {
 
       switch (e.key) {
         case 'f':
-          this.getAudio(0);
+          this.padTriggerHandler(0);
           break;
         case 'a':
-          this.getAudio(1);
+          this.padTriggerHandler(1);
           break;
         case 'w':
-          this.getAudio(2);
+          this.padTriggerHandler(2);
           break;
         case 'g':
-          this.getAudio(3);
+          this.padTriggerHandler(3);
           break;
         case 'd':
-          this.getAudio(4);
+          this.padTriggerHandler(4);
           break;
         // case 'r':
         //   this.startRecord();
@@ -100,6 +101,22 @@ export default class App extends Component {
           break;
       }
     });
+  }
+
+  // plays the audio for each respective pad, and initiates a pad 'hit' with timeout
+  padTriggerHandler(id) {
+    this.getAudio(id);
+    clearTimeout(this.state.padTriggered[id]);
+    const padArr = this.state.padTriggered;
+    padArr[id] = setTimeout(() => {
+      padArr[id] = false;
+      this.setState({
+        padTriggered: padArr,
+      });
+    }, 100);
+    this.setState({
+      padTriggered: padArr,
+    })
   }
 
   // dynamically updates all of the login/signup forms, filters by name.
@@ -568,10 +585,6 @@ export default class App extends Component {
       toggleMenu: toggled,
     });
   }
-  // simply triggers a given sound when the 'fingerpad' is clicked/pressed
-  triggerSound(id) {
-    this.getAudio(id);
-  }
 
   // allows you to 'overdub' the current loaded track and allow you to layer beats
   editTrack() {
@@ -582,6 +595,31 @@ export default class App extends Component {
     console.log('switching to dub track');
     }
   }
+
+  // // toggles the color of buttons whie clicked
+  // mouseDownHandler(e) {
+  //   const clickedItem = e.target;
+  //   if (clickedItem === 'button') { // look up syntax for nodes
+  //     this.setState({
+  //       buttonDown: true;
+  //     })
+  //   } else if (clickedItem ===  'fingerpad' ) { // again, syntax
+
+  //   }
+  // }
+
+  // mouseUpHandler(e) {
+  //   const clickedItem = e.target;
+  //   if (clickedItem === 'button') { // look up syntax for nodes
+  //     if clickedItem.action
+  //   }
+  // }
+
+  // disables button functions and greys them out to prevent user triggering
+  // disableButton(e) {
+  //   const button = e.target;
+  //   if ()
+  // }
 
   render() {
     return (
@@ -611,11 +649,12 @@ export default class App extends Component {
           <div className="main-content">
             <TapList
             audioList={this.state.audioList}
+            padTriggered={this.state.padTriggered}
             selectInstrument={this.selectInstrument.bind(this)}
             instruments={this.state.instruments}
             toggleMenu={this.state.toggleMenu}
             toggleSoundMenu={this.toggleSoundMenu.bind(this)}
-            triggerSound={this.triggerSound.bind(this)}
+            triggerSound={this.padTriggerHandler.bind(this)}
             />
           </div>
           <div className="aside-content">

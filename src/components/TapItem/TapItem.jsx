@@ -8,7 +8,6 @@ class TapItem extends Component {
     return this.props.audioList.map((sound, i) =>
         <button
           key={i}
-          style={{backgroundColor: 'rgba(255, 10, 10, 0)'}}
           className="list-item"
           onClick={() => this.props.selectInstrument(sound.name, this.props.id)}
         >{sound.name}</button>
