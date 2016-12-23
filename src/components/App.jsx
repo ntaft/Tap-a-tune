@@ -65,6 +65,11 @@ export default class App extends Component {
   componentDidMount() {
     // retrieves a saved list of all the user's songs
     this.getSavedList();
+    // detoggles all dropdowns when the user clicks outside of menu
+    document.addEventListener('click', (e) => {
+      console.log(e.target.className);
+      if (e.target.className !== 'drop-sounds') this.toggleSoundMenu(false);
+    });
   // for each keypress, make a http request for the selected audio
     document.addEventListener('keydown', (e) => {
       console.log(e.key);
@@ -578,9 +583,9 @@ export default class App extends Component {
       toggled[id] = false;
     } else {
       toggled = toggled.map(i => false);
-      toggled[id] = true;
+      if (id !== false) toggled[id] = true;
     }
-    console.log('toggling menu', toggled[id])
+    console.log('toggling menu', id);
     this.setState({
       toggleMenu: toggled,
     });

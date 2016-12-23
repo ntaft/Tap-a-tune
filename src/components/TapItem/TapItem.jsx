@@ -16,7 +16,7 @@ class TapItem extends Component {
 
   render() {
     return (
-      <div className="drop-menu">
+      <div>
         {this.listSounds()}
       </div>
     );
