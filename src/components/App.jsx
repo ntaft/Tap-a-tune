@@ -64,7 +64,7 @@ export default class App extends Component {
   }
   componentDidMount() {
     // retrieves a saved list of all the user's songs
-    this.getSavedList();
+    if (!(userId)) this.getSavedList();
     // detoggles all dropdowns when the user clicks outside of menu
     document.addEventListener('click', (e) => {
       console.log(e.target.className);
@@ -461,7 +461,7 @@ export default class App extends Component {
       const t = startTime;
       // ref for trackData format: [trackID, soundName, beatID, timeStamp]
       if (this.state.trackData[i][3] <= new Date().getTime() - t) {
-        this.getAudio(this.state.trackData[i][2]);
+        this.padTriggerHandler(this.state.trackData[i][2]);
         // stops the recording at the end of song
         if (this.state.trackData.length <= i + 1) {
           console.log ('end of song');
@@ -498,16 +498,9 @@ export default class App extends Component {
       instruments: this.state.instruments,
       userId: this.state.userId
     }
-    // saves the track to the current track list
-    // need to convert the data to proper format
-    // const currentTracks = this.state.savedTracks;
-    // currentTracks.push(trackObj)
-    // this.setState({
-    //   savedTracks: currentTracks
-    // })
 
     // posts the track data to the api
-    fetch('/api/tracks', {
+    if (!(userId)) fetch('/api/tracks', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -537,7 +530,7 @@ export default class App extends Component {
     })
     .then(r => r.json())
     .then((response) => {
-      // needs to convert back to an ordered nested array
+      // needs to convert object back to an ordered nested array
       // expanded on a clever method posted here: https://stackoverflow.com/questions/6857468/converting-a-js-object-to-an-array
       const arrData = response.map(obj => Object.keys(obj).map(key => obj[key]));
       this.setState({
@@ -645,7 +638,6 @@ export default class App extends Component {
         <div className="content-wrapper">
           <div className="saved-content">
             <SavedTrackList
-              // there is an issue with loadTrack auto-firing
               loadTrack={this.loadTrack.bind(this)}
               deleteTrack={this.deleteTrack.bind(this)}
               savedTracks={this.state.savedTracks}
@@ -674,6 +666,10 @@ export default class App extends Component {
               clearRecord={() => this.clearRecord('master')}
               clearDub={() => this.clearRecord('dub')}
               mergeDub={() => this.mergeDub()}
+              userId={this.state.userId}
+              trackData={this.state.trackData}
+              dubData={this.state.dubData}
+              recording={this.state.recording}
             />
           </div>
         </div>
