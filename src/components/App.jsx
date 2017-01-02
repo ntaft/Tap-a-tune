@@ -114,6 +114,7 @@ export default class App extends Component {
 
   // dynamically updates all of the login/signup forms, filters by name.
   updateAuthForms(e) {
+    e.stopPropigation();
     const value = e.target.value;
     // console.log(e.target.name, value);
     switch (e.target.name) {
@@ -324,6 +325,7 @@ export default class App extends Component {
 
   // handles the updating of the new track name form
   updateTrackName(e) {
+    e.stopPropigation();
     this.setState({ recordedName: e.target.value });
   }
 
