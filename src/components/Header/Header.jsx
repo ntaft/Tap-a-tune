@@ -10,8 +10,8 @@ const Header = props => (
     src="http://freevector.co/wp-content/uploads/2013/05/56093-triple-tap-of-three-fingers-of-a-hand-outlined-gesture-symbol-200x200.png"
     className="logo"
   />
-    <h1>Tappity</h1>
   </div>
+    <h1>Tappity</h1>
     <div className={props.userId === 0 ? "login-container" : "hide login-container"}>
       <div
         className="signup-box"
@@ -60,7 +60,7 @@ const Header = props => (
     </div>
   </div>
   <button
-    className={props.userId === 0 ? "hide logout-button" : "logout-button"}
+    className={props.userId ? "hide logout-button" : "logout-button"}
     onClick={props.handleLogout}
   >Log Out
   </button>
