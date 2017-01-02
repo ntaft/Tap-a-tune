@@ -12,7 +12,7 @@ export default class App extends Component {
     super();
 
     this.state = {
-      // default user id (1 for testing, 0 for logout)
+      // default user id (1 for dev testing, 0 for production)
       userId: 0,
       loginName: '',
       loginPass: '',
@@ -90,18 +90,6 @@ export default class App extends Component {
         case 'd':
           this.padTriggerHandler(4);
           break;
-        // case 'r':
-        //   this.startRecord();
-        //   break;
-        // case 't':
-        //   this.stopRecord();
-        //   break;
-        // case 'y':
-        //   this.clearRecord();
-        //   break;
-        // case 'e':
-        //   this.playTrack();
-        //   break;
         default:
           break;
       }
@@ -468,9 +456,6 @@ export default class App extends Component {
           clearInterval(interCode);
         }
         i += 1;
-        // this.setState({
-        //   trackPos: i,
-        // });
       }
     };
 
