@@ -64,7 +64,7 @@ export default class App extends Component {
   }
   componentDidMount() {
     // retrieves a saved list of all the user's songs
-    if (!(userId)) this.getSavedList();
+    if (!(this.state.userId)) this.getSavedList();
     // detoggles all dropdowns when the user clicks outside of menu
     document.addEventListener('click', (e) => {
       console.log(e.target.className);
@@ -114,7 +114,7 @@ export default class App extends Component {
 
   // dynamically updates all of the login/signup forms, filters by name.
   updateAuthForms(e) {
-    e.stopPropigation();
+    e.stopPropagation();
     const value = e.target.value;
     // console.log(e.target.name, value);
     switch (e.target.name) {
@@ -325,7 +325,7 @@ export default class App extends Component {
 
   // handles the updating of the new track name form
   updateTrackName(e) {
-    e.stopPropigation();
+    e.stopPropagation();
     this.setState({ recordedName: e.target.value });
   }
 
@@ -487,7 +487,7 @@ export default class App extends Component {
     }
 
     // posts the track data to the api
-    if (!(userId)) fetch('/api/tracks', {
+    if (!(this.state.userId)) fetch('/api/tracks', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -653,9 +653,9 @@ export default class App extends Component {
               clearRecord={() => this.clearRecord('master')}
               clearDub={() => this.clearRecord('dub')}
               mergeDub={() => this.mergeDub()}
-              userId={this.state.userId}
-              trackData={this.state.trackData}
-              dubData={this.state.dubData}
+              userId={!!(this.state.userId)}
+              trackData={!!(this.state.trackData.length)}
+              dubData={!!(this.state.dubData.length)}
               recording={this.state.recording}
             />
           </div>

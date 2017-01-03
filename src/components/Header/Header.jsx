@@ -60,7 +60,7 @@ const Header = props => (
     </div>
   </div>
   <button
-    className={props.userId ? "hide logout-button" : "logout-button"}
+    className={props.userId === 0 ? "hide logout-button" : "logout-button"}
     onClick={props.handleLogout}
   >Log Out
   </button>
