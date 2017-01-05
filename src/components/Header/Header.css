@@ -1,11 +1,10 @@
 .logo {
   height: 60px;
   width: 60px;
-  display: block;
 }
 
-.logo-box {
-
+.logo-box, h1, .login-container, .logout-button{
+  display: inline-block;
 }
 
 .hide {
@@ -13,5 +12,5 @@
 }
 
  .login-container, .logout-button {
-   float: right;
+  float: right;
  }
