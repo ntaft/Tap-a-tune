@@ -2,12 +2,13 @@
 
 User Story:
 
-Do you ever find yourself tapping your fingers to an imaginary beat? Turn that music into reality! Using a glove with conductive fingertips, tap on any conductive surface (such as a metal table, your arm, even a houseplant) and using a makey-makey as an interface, record the beat and upload your musical creation to the cloud on the Tappity app. Alter the sounds produced utilizing the Web Audio API.
+Do you ever find yourself tapping your fingers to an imaginary beat? Turn that music into reality! Using a glove with conductive fingertips, tap on any conductive surface (such as a metal table, your arm, even a houseplant) and using a makey-makey as an interface connected to a raspi server, record the beat and upload your musical creation to the cloud on the Tappity app. Alter the sounds produced utilizing the Web Audio API.
 
 Up on Heroku: http://tappitytap.herokuapp.com/
 
 Technologies used:
-* makey-makey interface: https://learn.sparkfun.com/tutorials/makey-makey-quickstart-guide
+* makey-makey/arduino
+* raspberry pi
 * javascript
 * node
 * express
@@ -19,7 +20,7 @@ Technologies used:
 * json web token
 
 Requirements:
-- makey-makey, arduino or similar interface that can produce key presses on user input - in particular a, w, d, f, g is ideal for the full experience. 
+- makey-makey, arduino or similar interface that can produce key presses on user input - in particular mapped to a, w, d, f, g is ideal for the full experience. raspberry pi required for remote useage, available on separate repo.
 
 ![Initial Wireframe of app, full screen](figures/wireframe.png)
 
@@ -30,15 +31,14 @@ http://www.codrops.com for piano audio samples
 http://www.99sounds.org for drum audio samples
 Fingerprint images by Ema Dimitrova from the Noun Project
 flaticon.com for icon logo
-method for converting object into array https://stackoverflow.com/questions/6857468/converting-a-js-object-to-an-array
 
 Known Issues:
-- problems with CSS rendering in React
-- UX issues
-- not mobile friendly
-- merge feature occasionally has binding issues
+- problems with CSS rendering in React on Heroku
+- some UX issues
+- not super mobile friendly
 
 Future Additions:
 - cleaner CSS and improved UX
-- integration of a raspberry pi server for remote usage
-- improved glove design, bypassing need for makey-makey
+- improved glove design with more integrated electronics
+- more robust raspi server with more options for hardwired inputs
+- get some videos of it in action!
