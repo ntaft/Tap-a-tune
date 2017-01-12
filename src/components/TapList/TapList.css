@@ -1,3 +1,10 @@
+.tap-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+}
+
 .tap-zone {
   /*height: 150px;
   width: 110px;*/

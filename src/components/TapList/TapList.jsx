@@ -40,7 +40,7 @@ class TapList extends Component {
 
   render() {
     return (
-      <div>
+      <div className="tap-container">
         {this.renderTapZones()}
       </div>
     );
