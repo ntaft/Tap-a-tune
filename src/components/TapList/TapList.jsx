@@ -11,7 +11,7 @@ class TapList extends Component {
         <div
           key={i}
           className="tap-zone"
-          style={{ backgroundColor: (this.props.padTriggered[i] ? '#cdd422' : '#8B370D'),
+          style={{ backgroundColor: (this.props.padTriggered[i] ? '#cdd422' : '#431c5d'),
             backgroundImage: fingerprints[i]
           }}
           onClick={() => this.props.triggerSound(i)}
@@ -21,19 +21,16 @@ class TapList extends Component {
             className="drop-sounds"
             onClick={() => this.props.toggleSoundMenu(i)}
           />
-          <div>
-            <TapItem
-              key={i}
-              className="tap-item"
-              instrument={this.instrument}
-              selectInstrument={this.props.selectInstrument}
-              audioList={this.props.audioList}
-            />
-          </div>
-
         </div>
         <div className={this.props.toggleMenu[i] ? "sound-menu drop" : "sound-menu hidden"} />
-      </div>
+            <TapItem
+            key={i}
+            className="tap-item"
+            instrument={this.instrument}
+            selectInstrument={this.props.selectInstrument}
+            audioList={this.props.audioList}
+            />
+        </div>
 
         );
   }

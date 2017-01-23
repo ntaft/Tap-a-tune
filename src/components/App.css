@@ -84,12 +84,12 @@ h1 {
 }
 
 
-
+/*
 @font-face {
   font-family: 'Chewy';
   src: url('./fonts/Chewy.otf');
   src: local('Chewy')
-}
+}*/
 
 @font-face {
   font-family: 'Lato';

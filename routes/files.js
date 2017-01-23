@@ -13,6 +13,11 @@ fileRouter.get('/:filename', (req, res) => {
   res.redirect(`https://s3.amazonaws.com/tappity/${req.params.filename}.wav`);
 });
 
+fileRouter.get('/:filename', (req, res) => {
+  console.log(req.params.filename);
+  res.redirect(`https://s3.amazonaws.com/tappity/${req.params.filename}.wav`);
+});
+
 // lists all avaliable files stored locally (or even remotely)
 // including names and links to file paths, etc.
 fileRouter.get('/', getSoundList, (req, res) => {

@@ -16,7 +16,7 @@ class TapItem extends Component {
 
   render() {
     return (
-      <div>
+      <div className="tap-item">
         {this.listSounds()}
       </div>
     );
