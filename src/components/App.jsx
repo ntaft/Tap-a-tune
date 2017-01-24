@@ -628,6 +628,7 @@ export default class App extends Component {
               loadTrack={this.loadTrack.bind(this)}
               deleteTrack={this.deleteTrack.bind(this)}
               savedTracks={this.state.savedTracks}
+
             />
           </div>
           <div className="main-content">

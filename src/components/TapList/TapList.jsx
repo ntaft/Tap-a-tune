@@ -7,7 +7,7 @@ class TapList extends Component {
   renderTapZones() {
     const fingerprints = ['url(http://i.imgur.com/9D5UU99.png)', 'url(http://i.imgur.com/USjeDxe.png)', 'url(http://i.imgur.com/oiXKjQY.png)', 'url(http://i.imgur.com/w3rpGob.png)', 'url(http://i.imgur.com/DmmUoN1.png)'];
     return this.props.instruments.map((instrument, i) =>
-      <div>
+      <div className="tap-area" >
         <div
           key={i}
           className="tap-zone"
@@ -37,7 +37,7 @@ class TapList extends Component {
 
   render() {
     return (
-      <div className="tap-container">
+      <div className="tap-container" style={{height: `${window.innerHeight - 75}px`}}>
         {this.renderTapZones()}
       </div>
     );
