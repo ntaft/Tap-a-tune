@@ -72,26 +72,26 @@ export default class App extends Component {
     });
   // for each keypress, make a http request for the selected audio
     document.addEventListener('keydown', (e) => {
-      console.log(e.key);
-
-      switch (e.key) {
-        case 'f':
-          this.padTriggerHandler(0);
-          break;
-        case 'a':
-          this.padTriggerHandler(1);
-          break;
-        case 'w':
-          this.padTriggerHandler(2);
-          break;
-        case 'g':
-          this.padTriggerHandler(3);
-          break;
-        case 'd':
-          this.padTriggerHandler(4);
-          break;
-        default:
-          break;
+      if (document.activeElement.type !== 'text') {
+        switch (e.key) {
+          case 'f':
+            this.padTriggerHandler(0);
+            break;
+          case 'a':
+            this.padTriggerHandler(1);
+            break;
+          case 'w':
+            this.padTriggerHandler(2);
+            break;
+          case 'g':
+            this.padTriggerHandler(3);
+            break;
+          case 'd':
+            this.padTriggerHandler(4);
+            break;
+          default:
+            break;
+        }
       }
     });
   }
