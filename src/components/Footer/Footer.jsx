@@ -4,7 +4,6 @@ const Footer = props => (
   <div
     className="footer"
   >
-      Nick Taft, 2016
   </div>
 );
 

@@ -68,7 +68,7 @@ export default class App extends Component {
     // detoggles all dropdowns when the user clicks outside of menu
     document.addEventListener('click', (e) => {
       console.log(e.target.className);
-      if (e.target.className !== 'drop-sounds') this.toggleSoundMenu(false);
+      if (e.target.className !== 'dropbtn') this.toggleSoundMenu(false);
     });
   // for each keypress, make a http request for the selected audio
     document.addEventListener('keydown', (e) => {
@@ -563,7 +563,7 @@ export default class App extends Component {
       toggled[id] = false;
     } else {
       toggled = toggled.map(i => false);
-      if (id !== false) toggled[id] = true;
+      if (!(toggled[id])) toggled[id] = true;
     }
     console.log('toggling menu', id);
     this.setState({

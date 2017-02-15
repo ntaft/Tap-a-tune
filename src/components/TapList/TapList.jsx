@@ -6,31 +6,36 @@ class TapList extends Component {
   // if the button is clicked, it drops down a list of user-selectable sounds
   renderTapZones() {
     const fingerprints = ['url(http://i.imgur.com/9D5UU99.png)', 'url(http://i.imgur.com/USjeDxe.png)', 'url(http://i.imgur.com/oiXKjQY.png)', 'url(http://i.imgur.com/w3rpGob.png)', 'url(http://i.imgur.com/DmmUoN1.png)'];
+    const colors = ['255,0,0', '0,255,0', '0,0,255', '255,255,0', '255,0,255']
     return this.props.instruments.map((instrument, i) =>
       <div className="tap-area" >
+
+        <div className="dropdown">
+          <button
+            className="dropbtn"
+            onClick={() => this.props.toggleSoundMenu(i)}
+          >
+            {this.props.instruments[i]}
+          </button>
+          <div className={this.props.toggleMenu[i] ? "dropdown-content show" : "dropdown-content hide"}>
+              <TapItem
+              key={i}
+              instrument={this.instrument}
+              selectInstrument={this.props.selectInstrument}
+              audioList={this.props.audioList}
+              />
+          </div>
+        </div>
+
         <div
           key={i}
           className="tap-zone"
-          style={{ backgroundColor: (this.props.padTriggered[i] ? '#cdd422' : '#431c5d'),
-            backgroundImage: fingerprints[i]
-          }}
+          style={{ backgroundColor: (this.props.padTriggered[i] ? `rgba(${colors[i]}, 0.5)` : '')}}
           onClick={() => this.props.triggerSound(i)}
-        >
-          <button
-            style={{backgroundColor: '#cdd422'}}
-            className="drop-sounds"
-            onClick={() => this.props.toggleSoundMenu(i)}
-          />
-        </div>
-        <div className={this.props.toggleMenu[i] ? "sound-menu drop" : "sound-menu hidden"} />
-            <TapItem
-            key={i}
-            className="tap-item"
-            instrument={this.instrument}
-            selectInstrument={this.props.selectInstrument}
-            audioList={this.props.audioList}
-            />
-        </div>
+        />
+
+
+      </div>
 
         );
   }

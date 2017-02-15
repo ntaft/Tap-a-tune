@@ -1,71 +1,92 @@
 .tap-area {
-  margin: 2%;
+  width: 14.5%;
+/*  margin: 0 2.9%;*/
 }
 
 .tap-container {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
+  justify-content: center;
+  background-image: url("https://s3.amazonaws.com/tappity/img/stop-3.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 50%;
+  max-width: 500px;
+  height: 80%;
+  box-sizing: border-box;
+  z-index: 1;
 }
 
 .tap-zone {
   /*height: 150px;
   width: 110px;*/
-  height: 18%;
-  width: 100px;
-  /*background-image: url("https://res.com/sites/default/files/block_icon_fingerprint_red.png");*/
+  height: 90%;
+  width: 100%;
   position: relative;
   display: block;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  border-radius: 100%;
-  float: left;
-  z-index: 0;
+/*  border-radius: 100%;*/
+  transition: background-color 0.1s;
+  z-index: 1;
 }
 
-
-/*https://3.bp.blogspot.com/-ETMBQJ_ZSi4/WDD2XcUlGOI/AAAAAAAAAQI/h6qWxDSh8jUtIabADzm-5Q4nhYp_5w8QgCLcB/s1600/Fingerprint.png*/
-/*Fingerprints by Ema Dimitrova from the Noun Project*/
-.hidden {
-    height: 0;
-    overflow: hidden;
-}
-
-.sound-menu {
-  margin: 0;
-  padding: 0;
-  height: 0;
-  width: 200px;
-  -webkit-transition: width .5s, height .5s;
-  transition: width .5s, height .5s;
-  background-color: #e62739;
-  z-index: 10;
-  position: absolute;
+.dropbtn {
+    background-color: #4CAF50;
+    box-sizing: border-box;
+    display: inline-block;
+    color: white;
+    height: 10%;
+    width: 100%;
+    font-size: 0.6em;
+    border: none;
+    /*padding: 10px 0;*/
+    margin: 0;
+    cursor: pointer;
+    display: block;
+    opacity: 0.5;
 
 }
 
-.drop {
-  height: 300px;
-  width: 200px;
-  overflow: scroll;
-  margin: 0;
-  padding: 0;
-  bottom: 0;
-  right: 0;
+.dropdown {
+    position: relative;
+    top: 0;
+    display: inline-block;
 }
 
-.drop-sounds {
-  height: 30px;
-  width: 30px;
-  border-style: none;
-  position: absolute;
-  bottom: -25px;
-  right: -25px;
-  border-radius: 100%;
-  background-color: 'transparent';
-  background-image: url("http://image.flaticon.com/icons/png/512/27/27064.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 2;
+    max-height: 400px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 2px 6px;
+    font-size: 0.8em;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}f
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
 }
