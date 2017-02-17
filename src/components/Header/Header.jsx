@@ -15,6 +15,12 @@ const Header = props => (
       <div
         className="signup-box"
       >
+        <button
+          id="signup-button"
+          onClick={props.handleSignup}
+        >
+          Sign up!
+        </button>
         <input
           type="text"
           value={props.signupName}
@@ -32,10 +38,9 @@ const Header = props => (
       </div>
     <div className="login-box">
       <button
-        id="signup-button"
-        onClick={props.handleSignup}
+        onClick={props.handleLogin}
       >
-        Sign up!
+        Log in!
       </button>
       <input
           type="text"
@@ -51,11 +56,6 @@ const Header = props => (
         placeholder="Password"
         onChange={props.updateAuthForms}
       />
-      <button
-        onClick={props.handleLogin}
-      >
-        Log in!
-      </button>
     </div>
   </div>
   <button

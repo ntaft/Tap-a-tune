@@ -11,6 +11,31 @@
   visibility: hidden;
 }
 
- .login-container, .logout-button {
+.logout-button {
   float: right;
+}
+
+ .login-container  {
+  float: right;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
  }
+
+ .login-box, .signup-box {
+  background: rgba(0, 0, 0, .1);
+  padding: 10px;
+}
+
+.signup-box, .signup-box input, button {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+
+
+.login-box, .login-box input, button {
+  display: inline-block;
+  margin: 0 10px;
+}
