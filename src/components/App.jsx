@@ -106,7 +106,7 @@ export default class App extends Component {
       this.setState({
         padTriggered: padArr,
       });
-    }, 100);
+    }, 200);
     this.setState({
       padTriggered: padArr,
     })
@@ -258,7 +258,6 @@ export default class App extends Component {
     .catch(err => console.log(err));
   }
 
-
   // Web audio API cobbled together from various MDN articles
   // fetches the audio file from our api
   getAudio(audioID) {
@@ -303,7 +302,6 @@ export default class App extends Component {
     })
     .catch(err => console.log(err));
   }
-
 
   // gets a list of all the saved records for the given user
   getSavedList() {
@@ -555,6 +553,7 @@ export default class App extends Component {
       instruments: newInst,
     })
   }
+
   // when the user clicks the menu indicator, toggles the instrument menu show
   // and detoggles all other menus
   toggleSoundMenu(id) {

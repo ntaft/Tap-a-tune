@@ -8,6 +8,7 @@ const TapControl = props => (
         className={props.recording ? "grey-out" : ""}
         onClick={props.startRecord}
       >
+        <img src="https://s3.amazonaws.com/tappity/img/play-button.svg"/>
         Start Recording
       </button>
       <button

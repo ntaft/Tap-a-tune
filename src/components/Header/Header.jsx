@@ -8,7 +8,7 @@ const Header = props => (
       <img
       src="http://freevector.co/wp-content/uploads/2013/05/56093-triple-tap-of-three-fingers-of-a-hand-outlined-gesture-symbol-200x200.png"
       className="logo"
-    />
+      />
     </div>
     <h1>Tappity</h1>
     <div className={props.userId === 0 ? "login-container" : "hide login-container"}>
