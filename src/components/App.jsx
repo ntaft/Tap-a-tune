@@ -277,8 +277,6 @@ export default class App extends Component {
     const request = new XMLHttpRequest();
 
     request.open('GET', `api/files/${audioFile}`, true);
-    // keep a persistent connection
-    request.setRequestHeader("Connection", "Keep-Alive");
 
     request.responseType = 'arraybuffer';
 
