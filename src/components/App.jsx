@@ -64,12 +64,14 @@ export default class App extends Component {
     this.getAudioList();
   }
   componentDidMount() {
+    socket.on('connect', function(){ console.log('socket.io connected')});
+    socket.on('event', msg => console.log(msg));
 
     // var socket = io('http://localhost:8000');
     // socket.on('event', (data) => {
     //   console.log(data);
     // });
-    // socket.on('connect', function(){ console.log('socket.io connected')});
+
     // socket.on('disconnect', function(){console.log('socket.io disconnected')});
 
     // retrieves a saved list of all the user's songs
