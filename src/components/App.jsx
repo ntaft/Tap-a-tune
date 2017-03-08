@@ -35,6 +35,7 @@ export default class App extends Component {
       recordedName: '',
       savedTracks: [],
       recording: false,
+      playing: false,
       toggleMenu: [false, false, false, false, false],
       padTriggered: [false, false, false, false, false]
     };
@@ -63,6 +64,14 @@ export default class App extends Component {
     this.getAudioList();
   }
   componentDidMount() {
+
+    // var socket = io('http://localhost:8000');
+    // socket.on('event', (data) => {
+    //   console.log(data);
+    // });
+    // socket.on('connect', function(){ console.log('socket.io connected')});
+    // socket.on('disconnect', function(){console.log('socket.io disconnected')});
+
     // retrieves a saved list of all the user's songs
     if (!(this.state.userId)) this.getSavedList();
     // detoggles all dropdowns when the user clicks outside of menu
@@ -268,6 +277,8 @@ export default class App extends Component {
     const request = new XMLHttpRequest();
 
     request.open('GET', `api/files/${audioFile}`, true);
+    // keep a persistent connection
+    request.setRequestHeader("Connection", "Keep-Alive");
 
     request.responseType = 'arraybuffer';
 
@@ -345,6 +356,7 @@ export default class App extends Component {
         dubData: [[0, 'initializing', -1, startTime]],
         recording: true,
       });
+      this.playTrack();
     }
   }
 
