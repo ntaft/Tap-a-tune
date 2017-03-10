@@ -15,30 +15,31 @@ Technologies used:
 * web audio api
 * react
 * CSS
-* postgres
+* postgreSQL
 * bcrypt
 * json web token
 
-Requirements:
-- makey-makey, arduino or similar interface that can produce key presses on user input - in particular mapped to a, w, d, f, g is ideal for the full experience. raspberry pi required for remote useage, available on separate repo.
-
 ![Initial Wireframe of app, full screen](figures/wireframe.png)
+
+Requirements:
+- makey-makey, arduino or similar interface that can produce key presses on user input - in particular mapped to a, w, d, f, g is ideal for the full experience. raspberry pi or similar required for remote useage, available on separate repo.
+
+![glove prototype](https://i.imgur.com/HbhZ2n1.jpg)
+
 
 Acnowledgements:
 @gittheking and @jasonseminara for webpack config
 @rapala61 for auth reference
 http://www.codrops.com for piano audio samples
 http://www.99sounds.org for drum audio samples
-Fingerprint images by Ema Dimitrova from the Noun Project
-flaticon.com for icon logo
+flaticon.com for icon logos
 
 Known Issues:
-- problems with CSS rendering in React on Heroku
-- some UX issues
-- not super mobile friendly
+- known problems with CSS rendering in React on Heroku w/ webpack
+- not currently mobile friendly
 
 Future Additions:
-- cleaner CSS and improved UX
+- fully embedded CSS to resolve some of the issues
 - improved glove design with more integrated electronics
 - more robust raspi server with more options for hardwired inputs
 - get some videos of it in action!
