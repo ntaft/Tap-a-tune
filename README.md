@@ -28,18 +28,17 @@ Requirements:
 
 
 Acnowledgements:
-@gittheking and @jasonseminara for webpack config
-@rapala61 for auth reference
-http://www.codrops.com for piano audio samples
-http://www.99sounds.org for drum audio samples
-flaticon.com for icon logos
+- @gittheking and @jasonseminara for webpack config
+- @rapala61 for auth reference
+- http://www.codrops.com for piano audio samples
+- http://www.99sounds.org for drum audio samples
+- flaticon.com for icon logos
 
 Known Issues:
 - known problems with CSS rendering in React on Heroku w/ webpack
 - not currently mobile friendly
 
 Future Additions:
-- fully embedded CSS to resolve some of the issues
+- fully embedded CSS to resolve some display issues and improve UX
 - improved glove design with more integrated electronics
 - more robust raspi server with more options for hardwired inputs
-- get some videos of it in action!
